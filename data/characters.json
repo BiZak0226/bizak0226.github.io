@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Amiya",
+    "work": "Arknights",
+    "birthday": "04-27",
+    "icon": "assets/Arknights/icon/amiya.png"
+  },
+  {
+    "name": "Shiroko",
+    "work": "BlueArchive",
+    "birthday": "05-05",
+    "icon": "assets/BlueArchive/icon/shiroko.png"
+  },
+  {
+    "name": "Hu Tao",
+    "work": "GenshinImpact",
+    "birthday": "07-15",
+    "icon": "assets/GenshinImpact/icon/hutao.png"
+  }
+]

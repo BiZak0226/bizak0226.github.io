@@ -1,20 +1,1882 @@
 [
   {
-    "name": "Amiya",
-    "work": "Arknights",
-    "birthday": "04-27",
-    "icon": "assets/Arknights/icon/amiya.png"
+    "name": "느와르 코르네",
+    "birthday": "08-30",
+    "work": "arknights"
   },
   {
-    "name": "Shiroko",
-    "work": "BlueArchive",
+    "name": "두린",
+    "birthday": "12-15",
+    "work": "arknights"
+  },
+  {
+    "name": "야토",
+    "birthday": "05-14",
+    "work": "arknights"
+  },
+  {
+    "name": "레인저",
+    "birthday": "07-22",
+    "work": "arknights"
+  },
+  {
+    "name": "비글",
+    "birthday": "03-02",
+    "work": "arknights"
+  },
+  {
+    "name": "팽",
+    "birthday": "12-02",
+    "work": "arknights"
+  },
+  {
+    "name": "크루스",
+    "birthday": "11-22",
+    "work": "arknights"
+  },
+  {
+    "name": "라바",
+    "birthday": "06-22",
+    "work": "arknights"
+  },
+  {
+    "name": "히비스커스",
+    "birthday": "06-21",
+    "work": "arknights"
+  },
+  {
+    "name": "멜란사",
+    "birthday": "03-19",
+    "work": "arknights"
+  },
+  {
+    "name": "카디건",
+    "birthday": "08-02",
+    "work": "arknights"
+  },
+  {
+    "name": "스튜어드",
+    "birthday": "12-24",
+    "work": "arknights"
+  },
+  {
+    "name": "아드나키엘",
+    "birthday": "05-30",
+    "work": "arknights"
+  },
+  {
+    "name": "안셀",
+    "birthday": "01-31",
+    "work": "arknights"
+  },
+  {
+    "name": "사일런스",
+    "birthday": "05-18",
+    "work": "arknights"
+  },
+  {
+    "name": "이프리트",
+    "birthday": "07-22",
+    "work": "arknights"
+  },
+  {
+    "name": "사리아",
+    "birthday": "04-23",
+    "work": "arknights"
+  },
+  {
+    "name": "프틸롭시스",
+    "birthday": "10-06",
+    "work": "arknights"
+  },
+  {
+    "name": "메이어",
+    "birthday": "11-20",
+    "work": "arknights"
+  },
+  {
+    "name": "맨티코어",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "스캐빈저",
+    "birthday": "08-22",
+    "work": "arknights"
+  },
+  {
+    "name": "플래티넘",
+    "birthday": "02-13",
+    "work": "arknights"
+  },
+  {
+    "name": "실버애쉬",
+    "birthday": "02-15",
+    "work": "arknights"
+  },
+  {
+    "name": "클리프하트",
+    "birthday": "11-28",
+    "work": "arknights"
+  },
+  {
+    "name": "프라마닉스",
+    "birthday": "02-13",
+    "work": "arknights"
+  },
+  {
+    "name": "쿠리어",
+    "birthday": "03-05",
+    "work": "arknights"
+  },
+  {
+    "name": "마터호른",
+    "birthday": "05-19",
+    "work": "arknights"
+  },
+  {
+    "name": "메테오라이트",
+    "birthday": "08-30",
+    "work": "arknights"
+  },
+  {
+    "name": "파이어워치",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "지마",
+    "birthday": "07-29",
+    "work": "arknights"
+  },
+  {
+    "name": "이스티나",
+    "birthday": "09-22",
+    "work": "arknights"
+  },
+  {
+    "name": "굼",
+    "birthday": "10-02",
+    "work": "arknights"
+  },
+  {
+    "name": "샤이닝",
+    "birthday": "10-07",
+    "work": "arknights"
+  },
+  {
+    "name": "니어",
+    "birthday": "04-23",
+    "work": "arknights"
+  },
+  {
+    "name": "나이팅게일",
+    "birthday": "05-04",
+    "work": "arknights"
+  },
+  {
+    "name": "시즈",
+    "birthday": "07-10",
+    "work": "arknights"
+  },
+  {
+    "name": "인드라",
+    "birthday": "04-15",
+    "work": "arknights"
+  },
+  {
+    "name": "소라",
+    "birthday": "09-12",
+    "work": "arknights"
+  },
+  {
+    "name": "텍사스",
+    "birthday": "06-01",
+    "work": "arknights"
+  },
+  {
+    "name": "엑시아",
+    "birthday": "12-24",
+    "work": "arknights"
+  },
+  {
+    "name": "크루아상",
+    "birthday": "09-29",
+    "work": "arknights"
+  },
+  {
+    "name": "시라유키",
+    "birthday": "07-20",
+    "work": "arknights"
+  },
+  {
+    "name": "호시구마",
+    "birthday": "01-20",
+    "work": "arknights"
+  },
+  {
+    "name": "프란카",
+    "birthday": "10-30",
+    "work": "arknights"
+  },
+  {
+    "name": "리스캄",
+    "birthday": "05-18",
+    "work": "arknights"
+  },
+  {
+    "name": "미르",
     "birthday": "05-05",
-    "icon": "assets/BlueArchive/icon/shiroko.png"
+    "work": "arknights"
   },
   {
-    "name": "Hu Tao",
-    "work": "GenshinImpact",
+    "name": "프로스트리프",
+    "birthday": "05-01",
+    "work": "arknights"
+  },
+  {
+    "name": "블루포이즌",
+    "birthday": "01-18",
+    "work": "arknights"
+  },
+  {
+    "name": "스펙터",
+    "birthday": "07-27",
+    "work": "arknights"
+  },
+  {
+    "name": "퍼퓨머",
+    "birthday": "01-30",
+    "work": "arknights"
+  },
+  {
+    "name": "기타노",
+    "birthday": "01-15",
+    "work": "arknights"
+  },
+  {
+    "name": "메테오",
+    "birthday": "05-01",
+    "work": "arknights"
+  },
+  {
+    "name": "에스텔",
+    "birthday": "02-14",
+    "work": "arknights"
+  },
+  {
+    "name": "헤이즈",
+    "birthday": "01-02",
+    "work": "arknights"
+  },
+  {
+    "name": "프로방스",
+    "birthday": "11-30",
+    "work": "arknights"
+  },
+  {
+    "name": "어스스피릿",
+    "birthday": "04-05",
+    "work": "arknights"
+  },
+  {
+    "name": "가비알",
+    "birthday": "05-01",
+    "work": "arknights"
+  },
+  {
+    "name": "에프이터",
+    "birthday": "08-10",
+    "work": "arknights"
+  },
+  {
+    "name": "에이야퍄들라",
+    "birthday": "10-18",
+    "work": "arknights"
+  },
+  {
+    "name": "무스",
+    "birthday": "08-19",
+    "work": "arknights"
+  },
+  {
+    "name": "쿠오라",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "도베르만",
+    "birthday": "05-27",
+    "work": "arknights"
+  },
+  {
+    "name": "벌컨",
+    "birthday": "04-30",
+    "work": "arknights"
+  },
+  {
+    "name": "레드",
+    "birthday": "08-25",
+    "work": "arknights"
+  },
+  {
+    "name": "라플란드",
+    "birthday": "11-11",
+    "work": "arknights"
+  },
+  {
+    "name": "와파린",
+    "birthday": "06-27",
+    "work": "arknights"
+  },
+  {
+    "name": "아미야",
+    "birthday": "12-23",
+    "work": "arknights"
+  },
+  {
+    "name": "딥컬러",
+    "birthday": "06-12",
+    "work": "arknights"
+  },
+  {
+    "name": "스카이파이어",
+    "birthday": "06-01",
+    "work": "arknights"
+  },
+  {
+    "name": "바닐라",
+    "birthday": "02-16",
+    "work": "arknights"
+  },
+  {
+    "name": "로프",
+    "birthday": "04-04",
+    "work": "arknights"
+  },
+  {
+    "name": "그라벨",
+    "birthday": "01-20",
+    "work": "arknights"
+  },
+  {
+    "name": "Unknown",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "Unknown",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "12F",
+    "birthday": "03-03",
+    "work": "arknights"
+  },
+  {
+    "name": "오키드",
+    "birthday": "01-15",
+    "work": "arknights"
+  },
+  {
+    "name": "제시카",
+    "birthday": "03-03",
+    "work": "arknights"
+  },
+  {
+    "name": "비그나",
+    "birthday": "12-12",
+    "work": "arknights"
+  },
+  {
+    "name": "마토이마루",
+    "birthday": "01-03",
+    "work": "arknights"
+  },
+  {
+    "name": "쇼",
+    "birthday": "01-05",
+    "work": "arknights"
+  },
+  {
+    "name": "안젤리나",
+    "birthday": "05-14",
+    "work": "arknights"
+  },
+  {
+    "name": "플룸",
+    "birthday": "10-28",
+    "work": "arknights"
+  },
+  {
+    "name": "Unknown",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "Unknown",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "Unknown",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "Unknown",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "Unknown",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "새비지",
+    "birthday": "06-30",
+    "work": "arknights"
+  },
+  {
+    "name": "캐터펄트",
+    "birthday": "08-08",
+    "work": "arknights"
+  },
+  {
+    "name": "미드나이트",
+    "birthday": "05-20",
+    "work": "arknights"
+  },
+  {
+    "name": "비헌터",
+    "birthday": "10-02",
+    "work": "arknights"
+  },
+  {
+    "name": "나이트메어",
+    "birthday": "06-01",
+    "work": "arknights"
+  },
+  {
+    "name": "그라니",
+    "birthday": "12-01",
+    "work": "arknights"
+  },
+  {
+    "name": "스카디",
+    "birthday": "03-07",
+    "work": "arknights"
+  },
+  {
+    "name": "스팟",
+    "birthday": "04-30",
+    "work": "arknights"
+  },
+  {
+    "name": "포푸카",
+    "birthday": "07-02",
+    "work": "arknights"
+  },
+  {
+    "name": "스와이어",
+    "birthday": "07-01",
+    "work": "arknights"
+  },
+  {
+    "name": "그레이",
+    "birthday": "06-06",
+    "work": "arknights"
+  },
+  {
+    "name": "첸",
+    "birthday": "07-07",
+    "work": "arknights"
+  },
+  {
+    "name": "수수로",
+    "birthday": "09-04",
+    "work": "arknights"
+  },
+  {
+    "name": "머틀",
+    "birthday": "12-13",
+    "work": "arknights"
+  },
+  {
+    "name": "아스테시아",
+    "birthday": "07-10",
+    "work": "arknights"
+  },
+  {
+    "name": "글라우쿠스",
+    "birthday": "07-27",
+    "work": "arknights"
+  },
+  {
+    "name": "실론",
+    "birthday": "09-25",
+    "work": "arknights"
+  },
+  {
+    "name": "슈바르츠",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "헬라그",
+    "birthday": "05-05",
+    "work": "arknights"
+  },
+  {
+    "name": "듀나",
+    "birthday": "08-11",
+    "work": "arknights"
+  },
+  {
+    "name": "에단",
+    "birthday": "01-29",
+    "work": "arknights"
+  },
+  {
+    "name": "브리즈",
+    "birthday": "06-24",
+    "work": "arknights"
+  },
+  {
+    "name": "마젤란",
+    "birthday": "10-17",
+    "work": "arknights"
+  },
+  {
+    "name": "플레임브링어",
+    "birthday": "12-25",
+    "work": "arknights"
+  },
+  {
+    "name": "이그제큐터",
+    "birthday": "07-07",
+    "work": "arknights"
+  },
+  {
+    "name": "버메일",
+    "birthday": "06-25",
+    "work": "arknights"
+  },
+  {
+    "name": "모스티마",
+    "birthday": "12-12",
+    "work": "arknights"
+  },
+  {
+    "name": "바이슨",
+    "birthday": "10-15",
+    "work": "arknights"
+  },
+  {
+    "name": "와이후",
+    "birthday": "12-01",
+    "work": "arknights"
+  },
+  {
+    "name": "메이",
+    "birthday": "05-01",
+    "work": "arknights"
+  },
+  {
+    "name": "브로카",
+    "birthday": "02-04",
+    "work": "arknights"
+  },
+  {
+    "name": "리드",
+    "birthday": "10-16",
+    "work": "arknights"
+  },
+  {
+    "name": "블레이즈",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "그레이스롯",
+    "birthday": "11-14",
+    "work": "arknights"
+  },
+  {
+    "name": "엠브리엘",
+    "birthday": "01-13",
+    "work": "arknights"
+  },
+  {
+    "name": "니엔",
+    "birthday": "09-09",
+    "work": "arknights"
+  },
+  {
+    "name": "아",
+    "birthday": "03-25",
+    "work": "arknights"
+  },
+  {
+    "name": "훔",
+    "birthday": "07-01",
+    "work": "arknights"
+  },
+  {
+    "name": "스노우상트",
+    "birthday": "10-17",
+    "work": "arknights"
+  },
+  {
+    "name": "케오베",
+    "birthday": "03-03",
+    "work": "arknights"
+  },
+  {
+    "name": "레이즈",
+    "birthday": "03-05",
+    "work": "arknights"
+  },
+  {
+    "name": "퓨어스트림",
+    "birthday": "10-24",
+    "work": "arknights"
+  },
+  {
+    "name": "백파이프",
+    "birthday": "07-17",
+    "work": "arknights"
+  },
+  {
+    "name": "세사",
+    "birthday": "04-22",
+    "work": "arknights"
+  },
+  {
+    "name": "우타게",
+    "birthday": "04-04",
+    "work": "arknights"
+  },
+  {
+    "name": "바이비크",
+    "birthday": "12-12",
+    "work": "arknights"
+  },
+  {
+    "name": "컨빅션",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "Unknown",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "커터",
+    "birthday": "05-02",
+    "work": "arknights"
+  },
+  {
+    "name": "샤마르",
+    "birthday": "10-29",
+    "work": "arknights"
+  },
+  {
+    "name": "시데로카",
+    "birthday": "03-17",
+    "work": "arknights"
+  },
+  {
+    "name": "엘리시움",
+    "birthday": "05-08",
+    "work": "arknights"
+  },
+  {
+    "name": "팬텀",
+    "birthday": "01-19",
+    "work": "arknights"
+  },
+  {
+    "name": "위디",
+    "birthday": "01-23",
+    "work": "arknights"
+  },
+  {
+    "name": "W",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "압생트",
+    "birthday": "11-10",
+    "work": "arknights"
+  },
+  {
+    "name": "레온하르트",
+    "birthday": "08-13",
+    "work": "arknights"
+  },
+  {
+    "name": "아스베스토스",
+    "birthday": "07-30",
+    "work": "arknights"
+  },
+  {
+    "name": "츠키노기",
+    "birthday": "05-03",
+    "work": "arknights"
+  },
+  {
+    "name": "로사",
+    "birthday": "10-31",
+    "work": "arknights"
+  },
+  {
+    "name": "포덴코",
+    "birthday": "03-25",
+    "work": "arknights"
+  },
+  {
+    "name": "스즈란",
+    "birthday": "10-09",
+    "work": "arknights"
+  },
+  {
+    "name": "클릭",
+    "birthday": "05-09",
+    "work": "arknights"
+  },
+  {
+    "name": "비즈왁스",
+    "birthday": "09-15",
+    "work": "arknights"
+  },
+  {
+    "name": "씬",
+    "birthday": "12-31",
+    "work": "arknights"
+  },
+  {
+    "name": "에이어스카르페",
+    "birthday": "10-25",
+    "work": "arknights"
+  },
+  {
+    "name": "키아베",
+    "birthday": "09-09",
+    "work": "arknights"
+  },
+  {
+    "name": "폴리닉",
+    "birthday": "08-18",
+    "work": "arknights"
+  },
+  {
+    "name": "쏜즈",
+    "birthday": "03-17",
+    "work": "arknights"
+  },
+  {
+    "name": "안드레아나",
+    "birthday": "11-16",
+    "work": "arknights"
+  },
+  {
+    "name": "제이",
+    "birthday": "09-17",
+    "work": "arknights"
+  },
+  {
+    "name": "애시드드롭",
+    "birthday": "08-13",
+    "work": "arknights"
+  },
+  {
+    "name": "토미미",
+    "birthday": "02-02",
+    "work": "arknights"
+  },
+  {
+    "name": "플린트",
+    "birthday": "09-17",
+    "work": "arknights"
+  },
+  {
+    "name": "유넥티스",
+    "birthday": "10-30",
+    "work": "arknights"
+  },
+  {
+    "name": "아렌",
+    "birthday": "09-07",
+    "work": "arknights"
+  },
+  {
+    "name": "에이프릴",
+    "birthday": "01-27",
+    "work": "arknights"
+  },
+  {
+    "name": "민트",
+    "birthday": "02-05",
+    "work": "arknights"
+  },
+  {
+    "name": "수르트",
+    "birthday": "01-22",
+    "work": "arknights"
+  },
+  {
+    "name": "버블",
+    "birthday": "03-19",
+    "work": "arknights"
+  },
+  {
+    "name": "아오스타",
+    "birthday": "05-09",
+    "work": "arknights"
+  },
+  {
+    "name": "위슬래시",
+    "birthday": "06-28",
+    "work": "arknights"
+  },
+  {
+    "name": "블레미샤인",
     "birthday": "07-15",
-    "icon": "assets/GenshinImpact/icon/hutao.png"
+    "work": "arknights"
+  },
+  {
+    "name": "머드락",
+    "birthday": "09-21",
+    "work": "arknights"
+  },
+  {
+    "name": "로즈몬티스",
+    "birthday": "07-06",
+    "work": "arknights"
+  },
+  {
+    "name": "위스퍼레인",
+    "birthday": "03-06",
+    "work": "arknights"
+  },
+  {
+    "name": "재키",
+    "birthday": "09-15",
+    "work": "arknights"
+  },
+  {
+    "name": "마운틴",
+    "birthday": "07-16",
+    "work": "arknights"
+  },
+  {
+    "name": "카프카",
+    "birthday": "12-01",
+    "work": "arknights"
+  },
+  {
+    "name": "로빈",
+    "birthday": "05-18",
+    "work": "arknights"
+  },
+  {
+    "name": "파인콘",
+    "birthday": "03-12",
+    "work": "arknights"
+  },
+  {
+    "name": "아르케토",
+    "birthday": "11-16",
+    "work": "arknights"
+  },
+  {
+    "name": "아이리스",
+    "birthday": "04-02",
+    "work": "arknights"
+  },
+  {
+    "name": "빈스토크",
+    "birthday": "03-10",
+    "work": "arknights"
+  },
+  {
+    "name": "투예",
+    "birthday": "04-15",
+    "work": "arknights"
+  },
+  {
+    "name": "우요우",
+    "birthday": "01-13",
+    "work": "arknights"
+  },
+  {
+    "name": "사가",
+    "birthday": "12-31",
+    "work": "arknights"
+  },
+  {
+    "name": "시",
+    "birthday": "11-11",
+    "work": "arknights"
+  },
+  {
+    "name": "라바 더 퍼거토리",
+    "birthday": "06-22",
+    "work": "arknights"
+  },
+  {
+    "name": "Ash",
+    "birthday": "12-24",
+    "work": "arknights"
+  },
+  {
+    "name": "Blitz",
+    "birthday": "04-02",
+    "work": "arknights"
+  },
+  {
+    "name": "Frost",
+    "birthday": "05-04",
+    "work": "arknights"
+  },
+  {
+    "name": "Tachanka",
+    "birthday": "11-03",
+    "work": "arknights"
+  },
+  {
+    "name": "패신저",
+    "birthday": "09-01",
+    "work": "arknights"
+  },
+  {
+    "name": "토디폰스",
+    "birthday": "07-31",
+    "work": "arknights"
+  },
+  {
+    "name": "헤비레인",
+    "birthday": "03-03",
+    "work": "arknights"
+  },
+  {
+    "name": "스카디",
+    "birthday": "03-07",
+    "work": "arknights"
+  },
+  {
+    "name": "켈시",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "글래디아",
+    "birthday": "11-06",
+    "work": "arknights"
+  },
+  {
+    "name": "아카후유",
+    "birthday": "03-27",
+    "work": "arknights"
+  },
+  {
+    "name": "카넬리안",
+    "birthday": "01-17",
+    "work": "arknights"
+  },
+  {
+    "name": "키라라",
+    "birthday": "11-29",
+    "work": "arknights"
+  },
+  {
+    "name": "베나",
+    "birthday": "04-03",
+    "work": "arknights"
+  },
+  {
+    "name": "인디고",
+    "birthday": "09-30",
+    "work": "arknights"
+  },
+  {
+    "name": "팔라스",
+    "birthday": "02-08",
+    "work": "arknights"
+  },
+  {
+    "name": "라 플루마",
+    "birthday": "08-29",
+    "work": "arknights"
+  },
+  {
+    "name": "미즈키",
+    "birthday": "03-22",
+    "work": "arknights"
+  },
+  {
+    "name": "첸",
+    "birthday": "07-07",
+    "work": "arknights"
+  },
+  {
+    "name": "테킬라",
+    "birthday": "05-15",
+    "work": "arknights"
+  },
+  {
+    "name": "사일라흐",
+    "birthday": "05-31",
+    "work": "arknights"
+  },
+  {
+    "name": "멀베리",
+    "birthday": "06-26",
+    "work": "arknights"
+  },
+  {
+    "name": "로베르타",
+    "birthday": "05-10",
+    "work": "arknights"
+  },
+  {
+    "name": "파투스",
+    "birthday": "10-10",
+    "work": "arknights"
+  },
+  {
+    "name": "애쉬락",
+    "birthday": "03-20",
+    "work": "arknights"
+  },
+  {
+    "name": "니어",
+    "birthday": "04-23",
+    "work": "arknights"
+  },
+  {
+    "name": "플레임테일",
+    "birthday": "10-08",
+    "work": "arknights"
+  },
+  {
+    "name": "와일드메인",
+    "birthday": "08-03",
+    "work": "arknights"
+  },
+  {
+    "name": "Unknown",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "코로세럼",
+    "birthday": "04-07",
+    "work": "arknights"
+  },
+  {
+    "name": "허니베리",
+    "birthday": "03-20",
+    "work": "arknights"
+  },
+  {
+    "name": "푸딩",
+    "birthday": "12-21",
+    "work": "arknights"
+  },
+  {
+    "name": "노시스",
+    "birthday": "12-11",
+    "work": "arknights"
+  },
+  {
+    "name": "오로라",
+    "birthday": "12-20",
+    "work": "arknights"
+  },
+  {
+    "name": "나인컬러드 디어",
+    "birthday": "12-08",
+    "work": "arknights"
+  },
+  {
+    "name": "쉐라",
+    "birthday": "12-05",
+    "work": "arknights"
+  },
+  {
+    "name": "샬렘",
+    "birthday": "12-09",
+    "work": "arknights"
+  },
+  {
+    "name": "블랙나이트",
+    "birthday": "11-02",
+    "work": "arknights"
+  },
+  {
+    "name": "골든글로우",
+    "birthday": "01-07",
+    "work": "arknights"
+  },
+  {
+    "name": "퀘르쿠스",
+    "birthday": "12-22",
+    "work": "arknights"
+  },
+  {
+    "name": "링",
+    "birthday": "03-03",
+    "work": "arknights"
+  },
+  {
+    "name": "리",
+    "birthday": "10-25",
+    "work": "arknights"
+  },
+  {
+    "name": "크루스",
+    "birthday": "11-22",
+    "work": "arknights"
+  },
+  {
+    "name": "피아메타",
+    "birthday": "04-03",
+    "work": "arknights"
+  },
+  {
+    "name": "카제마루",
+    "birthday": "12-29",
+    "work": "arknights"
+  },
+  {
+    "name": "인포서",
+    "birthday": "01-30",
+    "work": "arknights"
+  },
+  {
+    "name": "혼",
+    "birthday": "11-01",
+    "work": "arknights"
+  },
+  {
+    "name": "락락",
+    "birthday": "06-07",
+    "work": "arknights"
+  },
+  {
+    "name": "체스트넛",
+    "birthday": "03-15",
+    "work": "arknights"
+  },
+  {
+    "name": "하이디",
+    "birthday": "03-26",
+    "work": "arknights"
+  },
+  {
+    "name": "스펙터",
+    "birthday": "07-27",
+    "work": "arknights"
+  },
+  {
+    "name": "아이린",
+    "birthday": "01-03",
+    "work": "arknights"
+  },
+  {
+    "name": "루멘",
+    "birthday": "06-12",
+    "work": "arknights"
+  },
+  {
+    "name": "에라토",
+    "birthday": "03-14",
+    "work": "arknights"
+  },
+  {
+    "name": "윈드플릿",
+    "birthday": "02-02",
+    "work": "arknights"
+  },
+  {
+    "name": "에벤홀츠",
+    "birthday": "06-05",
+    "work": "arknights"
+  },
+  {
+    "name": "히비스커스",
+    "birthday": "06-21",
+    "work": "arknights"
+  },
+  {
+    "name": "체르니",
+    "birthday": "09-10",
+    "work": "arknights"
+  },
+  {
+    "name": "도로시",
+    "birthday": "05-08",
+    "work": "arknights"
+  },
+  {
+    "name": "그레이",
+    "birthday": "06-06",
+    "work": "arknights"
+  },
+  {
+    "name": "아스트젠",
+    "birthday": "07-10",
+    "work": "arknights"
+  },
+  {
+    "name": "가비알",
+    "birthday": "05-01",
+    "work": "arknights"
+  },
+  {
+    "name": "파죰카",
+    "birthday": "03-15",
+    "work": "arknights"
+  },
+  {
+    "name": "칸타빌레",
+    "birthday": "04-07",
+    "work": "arknights"
+  },
+  {
+    "name": "미니멀리스트",
+    "birthday": "04-20",
+    "work": "arknights"
+  },
+  {
+    "name": "소흑",
+    "birthday": "11-01",
+    "work": "arknights"
+  },
+  {
+    "name": "무에나",
+    "birthday": "12-03",
+    "work": "arknights"
+  },
+  {
+    "name": "프로바이조",
+    "birthday": "10-30",
+    "work": "arknights"
+  },
+  {
+    "name": "하이모어",
+    "birthday": "08-23",
+    "work": "arknights"
+  },
+  {
+    "name": "스톰아이",
+    "birthday": "02-12",
+    "work": "arknights"
+  },
+  {
+    "name": "터치",
+    "birthday": "11-12",
+    "work": "arknights"
+  },
+  {
+    "name": "샤프",
+    "birthday": "12-19",
+    "work": "arknights"
+  },
+  {
+    "name": "피스",
+    "birthday": "06-14",
+    "work": "arknights"
+  },
+  {
+    "name": "튤립",
+    "birthday": "11-08",
+    "work": "arknights"
+  },
+  {
+    "name": "다그다",
+    "birthday": "07-09",
+    "work": "arknights"
+  },
+  {
+    "name": "토터",
+    "birthday": "06-21",
+    "work": "arknights"
+  },
+  {
+    "name": "파프리카",
+    "birthday": "03-13",
+    "work": "arknights"
+  },
+  {
+    "name": "스테인리스",
+    "birthday": "04-11",
+    "work": "arknights"
+  },
+  {
+    "name": "쿼츠",
+    "birthday": "08-13",
+    "work": "arknights"
+  },
+  {
+    "name": "루나컵",
+    "birthday": "10-03",
+    "work": "arknights"
+  },
+  {
+    "name": "카니팔라트",
+    "birthday": "12-12",
+    "work": "arknights"
+  },
+  {
+    "name": "비질",
+    "birthday": "01-15",
+    "work": "arknights"
+  },
+  {
+    "name": "페넌스",
+    "birthday": "07-09",
+    "work": "arknights"
+  },
+  {
+    "name": "텍사스",
+    "birthday": "06-01",
+    "work": "arknights"
+  },
+  {
+    "name": "퍼즐",
+    "birthday": "12-05",
+    "work": "arknights"
+  },
+  {
+    "name": "아르모니",
+    "birthday": "05-13",
+    "work": "arknights"
+  },
+  {
+    "name": "리드",
+    "birthday": "10-16",
+    "work": "arknights"
+  },
+  {
+    "name": "린",
+    "birthday": "11-09",
+    "work": "arknights"
+  },
+  {
+    "name": "치우바이",
+    "birthday": "05-14",
+    "work": "arknights"
+  },
+  {
+    "name": "파이어휘슬",
+    "birthday": "05-06",
+    "work": "arknights"
+  },
+  {
+    "name": "윈드차임스",
+    "birthday": "04-07",
+    "work": "arknights"
+  },
+  {
+    "name": "총웨",
+    "birthday": "01-01",
+    "work": "arknights"
+  },
+  {
+    "name": "지에윈",
+    "birthday": "07-06",
+    "work": "arknights"
+  },
+  {
+    "name": "야토",
+    "birthday": "05-14",
+    "work": "arknights"
+  },
+  {
+    "name": "테라 대륙 조사단",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "느와르 코르네",
+    "birthday": "08-30",
+    "work": "arknights"
+  },
+  {
+    "name": "U-Official",
+    "birthday": "01-04",
+    "work": "arknights"
+  },
+  {
+    "name": "휴머스",
+    "birthday": "02-20",
+    "work": "arknights"
+  },
+  {
+    "name": "모건",
+    "birthday": "05-14",
+    "work": "arknights"
+  },
+  {
+    "name": "시멘트",
+    "birthday": "10-25",
+    "work": "arknights"
+  },
+  {
+    "name": "이네스",
+    "birthday": "02-19",
+    "work": "arknights"
+  },
+  {
+    "name": "사일런스",
+    "birthday": "05-18",
+    "work": "arknights"
+  },
+  {
+    "name": "멜라나이트",
+    "birthday": "03-15",
+    "work": "arknights"
+  },
+  {
+    "name": "오올헤약",
+    "birthday": "07-12",
+    "work": "arknights"
+  },
+  {
+    "name": "뮤엘시스",
+    "birthday": "11-03",
+    "work": "arknights"
+  },
+  {
+    "name": "Unknown",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "스푸리아",
+    "birthday": "08-20",
+    "work": "arknights"
+  },
+  {
+    "name": "이그제큐터",
+    "birthday": "07-07",
+    "work": "arknights"
+  },
+  {
+    "name": "인사이더",
+    "birthday": "11-14",
+    "work": "arknights"
+  },
+  {
+    "name": "티폰",
+    "birthday": "02-01",
+    "work": "arknights"
+  },
+  {
+    "name": "산탈라",
+    "birthday": "03-19",
+    "work": "arknights"
+  },
+  {
+    "name": "발라크빈",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "에이야퍄들라",
+    "birthday": "10-18",
+    "work": "arknights"
+  },
+  {
+    "name": "스와이어",
+    "birthday": "07-01",
+    "work": "arknights"
+  },
+  {
+    "name": "폰사이러스",
+    "birthday": "11-21",
+    "work": "arknights"
+  },
+  {
+    "name": "브라이오피타",
+    "birthday": "09-29",
+    "work": "arknights"
+  },
+  {
+    "name": "제시카",
+    "birthday": "03-03",
+    "work": "arknights"
+  },
+  {
+    "name": "아몬드",
+    "birthday": "02-27",
+    "work": "arknights"
+  },
+  {
+    "name": "콜드샷",
+    "birthday": "07-26",
+    "work": "arknights"
+  },
+  {
+    "name": "버던트",
+    "birthday": "04-12",
+    "work": "arknights"
+  },
+  {
+    "name": "벤델라",
+    "birthday": "05-14",
+    "work": "arknights"
+  },
+  {
+    "name": "델핀",
+    "birthday": "11-02",
+    "work": "arknights"
+  },
+  {
+    "name": "외드레르",
+    "birthday": "04-22",
+    "work": "arknights"
+  },
+  {
+    "name": "베이스라인",
+    "birthday": "07-16",
+    "work": "arknights"
+  },
+  {
+    "name": "케이퍼",
+    "birthday": "01-20",
+    "work": "arknights"
+  },
+  {
+    "name": "레싱",
+    "birthday": "07-17",
+    "work": "arknights"
+  },
+  {
+    "name": "디아만테",
+    "birthday": "01-07",
+    "work": "arknights"
+  },
+  {
+    "name": "비비아나",
+    "birthday": "07-21",
+    "work": "arknights"
+  },
+  {
+    "name": "비르투오사",
+    "birthday": "09-23",
+    "work": "arknights"
+  },
+  {
+    "name": "레토",
+    "birthday": "03-30",
+    "work": "arknights"
+  },
+  {
+    "name": "데겐블레허",
+    "birthday": "06-06",
+    "work": "arknights"
+  },
+  {
+    "name": "해럴드",
+    "birthday": "09-21",
+    "work": "arknights"
+  },
+  {
+    "name": "워미",
+    "birthday": "12-17",
+    "work": "arknights"
+  },
+  {
+    "name": "레이",
+    "birthday": "07-14",
+    "work": "arknights"
+  },
+  {
+    "name": "좌락",
+    "birthday": "04-30",
+    "work": "arknights"
+  },
+  {
+    "name": "케스트럴",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "슈",
+    "birthday": "06-06",
+    "work": "arknights"
+  },
+  {
+    "name": "완칭",
+    "birthday": "05-06",
+    "work": "arknights"
+  },
+  {
+    "name": "그레인버즈",
+    "birthday": "05-21",
+    "work": "arknights"
+  },
+  {
+    "name": "Ela",
+    "birthday": "11-08",
+    "work": "arknights"
+  },
+  {
+    "name": "Iana",
+    "birthday": "08-27",
+    "work": "arknights"
+  },
+  {
+    "name": "Doc",
+    "birthday": "09-16",
+    "work": "arknights"
+  },
+  {
+    "name": "Fuze",
+    "birthday": "10-12",
+    "work": "arknights"
+  },
+  {
+    "name": "오다",
+    "birthday": "01-01",
+    "work": "arknights"
+  },
+  {
+    "name": "루토나다",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "아스카론",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "아로마",
+    "birthday": "08-01",
+    "work": "arknights"
+  },
+  {
+    "name": "위셔델",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "로고스",
+    "birthday": "09-05",
+    "work": "arknights"
+  },
+  {
+    "name": "팽",
+    "birthday": "12-02",
+    "work": "arknights"
+  },
+  {
+    "name": "Unknown",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "시빌라이트 에테르나",
+    "birthday": "07-11",
+    "work": "arknights"
+  },
+  {
+    "name": "울피아누스",
+    "birthday": "04-13",
+    "work": "arknights"
+  },
+  {
+    "name": "언더플로우",
+    "birthday": "08-01",
+    "work": "arknights"
+  },
+  {
+    "name": "루실라",
+    "birthday": "11-03",
+    "work": "arknights"
+  },
+  {
+    "name": "님프",
+    "birthday": "08-31",
+    "work": "arknights"
+  },
+  {
+    "name": "틴맨",
+    "birthday": "미공개",
+    "work": "arknights"
+  },
+  {
+    "name": "미틈",
+    "birthday": "09-19",
+    "work": "arknights"
+  },
+  {
+    "name": "페페",
+    "birthday": "06-12",
+    "work": "arknights"
+  },
+  {
+    "name": "나란투야",
+    "birthday": "05-26",
+    "work": "arknights"
+  },
+  {
+    "name": "파피루스",
+    "birthday": "07-12",
+    "work": "arknights"
+  },
+  {
+    "name": "샌드레코너",
+    "birthday": "06-15",
+    "work": "arknights"
+  },
+  {
+    "name": "라이오스",
+    "birthday": "11-26",
+    "work": "arknights"
+  },
+  {
+    "name": "마르실",
+    "birthday": "04-19",
+    "work": "arknights"
+  },
+  {
+    "name": "칠책",
+    "birthday": "05-18",
+    "work": "arknights"
+  },
+  {
+    "name": "센시",
+    "birthday": "10-02",
+    "work": "arknights"
+  },
+  {
+    "name": "비나 빅토리아",
+    "birthday": "07-10",
+    "work": "arknights"
+  },
+  {
+    "name": "보빙",
+    "birthday": "03-11",
+    "work": "arknights"
+  },
+  {
+    "name": "캐서린",
+    "birthday": "08-28",
+    "work": "arknights"
+  },
+  {
+    "name": "필라에",
+    "birthday": "05-29",
+    "work": "arknights"
+  },
+  {
+    "name": "콘트레일",
+    "birthday": "03-16",
+    "work": "arknights"
+  },
+  {
+    "name": "라플란드",
+    "birthday": "11-11",
+    "work": "arknights"
+  },
+  {
+    "name": "불피스폴리아",
+    "birthday": "09-08",
+    "work": "arknights"
+  },
+  {
+    "name": "피구리노",
+    "birthday": "01-21",
+    "work": "arknights"
+  },
+  {
+    "name": "크라운슬레이어",
+    "birthday": "07-22",
+    "work": "arknights"
+  },
+  {
+    "name": "테크노",
+    "birthday": "08-30",
+    "work": "arknights"
+  },
+  {
+    "name": "쏜즈",
+    "birthday": "03-17",
+    "work": "arknights"
+  },
+  {
+    "name": "로즈솔트",
+    "birthday": "03-30",
+    "work": "arknights"
+  },
+  {
+    "name": "서퍼",
+    "birthday": "05-03",
+    "work": "arknights"
+  },
+  {
+    "name": "위",
+    "birthday": "12-12",
+    "work": "arknights"
+  },
+  {
+    "name": "블레이즈",
+    "birthday": "03-24",
+    "work": "arknights"
+  },
+  {
+    "name": "노웰",
+    "birthday": "12-25",
+    "work": "arknights"
+  },
+  {
+    "name": "엔텔레키아",
+    "birthday": "12-31",
+    "work": "arknights"
+  },
+  {
+    "name": "싱주",
+    "birthday": "03-24",
+    "work": "arknights"
+  },
+  {
+    "name": "네크라스",
+    "birthday": "10-16",
+    "work": "arknights"
+  },
+  {
+    "name": "울페나이트",
+    "birthday": "12-01",
+    "work": "arknights"
+  },
+  {
+    "name": "Unknown",
+    "birthday": "02-01",
+    "work": "arknights"
+  },
+  {
+    "name": "알라나",
+    "birthday": "04-17",
+    "work": "arknights"
+  },
+  {
+    "name": "Mon3tr",
+    "birthday": "07-25",
+    "work": "arknights"
+  },
+  {
+    "name": "윈드스쿠트",
+    "birthday": "11-05",
+    "work": "arknights"
   }
 ]

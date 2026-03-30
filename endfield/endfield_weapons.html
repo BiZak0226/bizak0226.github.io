@@ -466,7 +466,7 @@ let WEAPONS = [];
 
 async function loadWeapons() {
   try {
-    const res = await fetch('./data/endfield_weapons_lore.json');
+    const res = await fetch('endfield/data/endfield_weapons_lore.json');
     const data = await res.json();
 
     WEAPONS = data;

@@ -4,420 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>엔드필드 무기 아카이브</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #10111a;
-    --surface: #161820;
-    --surface2: #1c1f2b;
-    --surface3: #222638;
-    --border: #2a2f45;
-    --border-glow: #353d5c;
-    --text-primary: #eaedf7;
-    --text-secondary: #b0b8d4;
-    --text-muted: #5a6180;
-    --r6: #ff7100;
-    --r5: #ffcc00;
-    --r4: #b380ff;
-    --r3: #33C2FF;
-    --accent: #4a8be8;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--bg);
-    color: var(--text-primary);
-    font-family: 'Noto Sans KR', sans-serif;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  /* ─── HEADER ─── */
-  header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 12px 24px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    flex-shrink: 0;
-    position: relative;
-    z-index: 10;
-  }
-  header::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.5;
-  }
-  .logo {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    line-height: 1.4;
-  }
-  .logo-main {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: 1px;
-  }
-  .header-divider { width: 1px; height: 32px; background: var(--border); }
-
-  .filters {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
-    flex: 1;
-  }
-  .filter-label {
-    font-size: 10px;
-    color: var(--text-muted);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-family: 'Share Tech Mono', monospace;
-  }
-  .filter-group { display: flex; gap: 6px; align-items: center; }
-  .filter-btn {
-    padding: 4px 12px;
-    border-radius: 2px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text-secondary);
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-  }
-  .filter-btn:hover { border-color: var(--border-glow); color: var(--text-primary); }
-  .filter-btn.active {
-    background: var(--surface3);
-    border-color: var(--accent);
-    color: var(--text-primary);
-  }
-  .filter-btn[data-rarity="6"].active { border-color: var(--r6); color: var(--r6); }
-  .filter-btn[data-rarity="5"].active { border-color: var(--r5); color: var(--r5); }
-  .filter-btn[data-rarity="4"].active { border-color: var(--r4); color: var(--r4); }
-  .filter-btn[data-rarity="3"].active { border-color: var(--r3); color: var(--r3); }
-
-  .search-box {
-    margin-left: auto;
-    position: relative;
-  }
-  .search-box input {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    color: var(--text-primary);
-    padding: 5px 12px 5px 30px;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 12px;
-    width: 160px;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  .search-box input:focus { border-color: var(--accent); }
-  .search-box::before {
-    content: '🔍';
-    position: absolute;
-    left: 8px; top: 50%;
-    transform: translateY(-50%);
-    font-size: 11px;
-    pointer-events: none;
-  }
-
-  /* ─── MAIN LAYOUT ─── */
-  .main { display: flex; flex: 1; overflow: hidden; }
-
-  /* ─── LEFT PANEL ─── */
-  .panel-left {
-    width: 260px;
-    min-width: 220px;
-    background: var(--surface);
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    flex-shrink: 0;
-  }
-  .panel-left-header {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .panel-left-header span {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    color: var(--text-muted);
-    letter-spacing: 1px;
-  }
-  #weapon-count {
-    color: var(--accent);
-    font-weight: 600;
-  }
-
-  .weapon-list {
-    overflow-y: auto;
-    flex: 1;
-    padding: 4px 0;
-  }
-  .weapon-list::-webkit-scrollbar { width: 4px; }
-  .weapon-list::-webkit-scrollbar-track { background: transparent; }
-  .weapon-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-  .weapon-item {
-    padding: 12px 16px;
-    cursor: pointer;
-    transition: all 0.12s;
-    border-left: 3px solid transparent;
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .weapon-item:hover {
-    background: var(--surface2);
-    border-left-color: var(--border-glow);
-  }
-  .weapon-item.selected {
-    background: var(--surface3);
-    border-left-color: var(--accent);
-  }
-  .weapon-item.selected .weapon-name-list { color: #fff; }
-
-  .rarity-dot {
-    width: 4px;
-    height: 28px;
-    border-radius: 2px;
-    flex-shrink: 0;
-  }
-  .weapon-item-info { flex: 1; min-width: 0; }
-  .weapon-name-list {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text-primary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-family: 'Noto Serif KR', serif;
-  }
-  .weapon-meta {
-    font-size: 11px;
-    color: var(--text-muted);
-    font-family: 'Share Tech Mono', monospace;
-    letter-spacing: 0.5px;
-    margin-top: 3px;
-  }
-  .rarity-stars {
-    font-size: 9px;
-    letter-spacing: -1px;
-  }
-
-  .no-results {
-    padding: 40px 16px;
-    text-align: center;
-    color: var(--text-muted);
-    font-size: 12px;
-    line-height: 1.8;
-  }
-
-  /* ─── CENTER PANEL ─── */
-  .panel-center {
-    flex: 1;
-    overflow-y: auto;
-    background: var(--bg);
-    position: relative;
-  }
-  .panel-center::-webkit-scrollbar { width: 4px; }
-  .panel-center::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-  .empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    color: var(--text-muted);
-    gap: 16px;
-    user-select: none;
-  }
-  .empty-state-icon {
-    font-size: 48px;
-    opacity: 0.2;
-  }
-  .empty-state-text {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  .weapon-detail {
-    padding: 44px 60px 60px;
-    max-width: 900px;
-    animation: fadeIn 0.2s ease;
-  }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-  .detail-header {
-    margin-bottom: 32px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-  }
-  .detail-header::after {
-    content: '';
-    position: absolute;
-    bottom: -1px; left: 0;
-    width: 80px; height: 1px;
-    background: var(--rarity-color, var(--accent));
-    transition: background 0.3s;
-  }
-
-  .detail-rarity-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 3px 10px;
-    border-radius: 2px;
-    border: 1px solid;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
-  }
-  .detail-name {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 32px;
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.2;
-    margin-bottom: 8px;
-    letter-spacing: 1px;
-  }
-  .detail-type-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .detail-type-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 3px 10px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    font-size: 11px;
-    color: var(--text-secondary);
-    font-family: 'Share Tech Mono', monospace;
-    letter-spacing: 0.5px;
-  }
-  .detail-id {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    color: var(--text-muted);
-    letter-spacing: 1px;
-  }
-
-  .section-block {
-    margin-bottom: 36px;
-  }
-  .section-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  .desc-box {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--rarity-color, var(--border));
-    border-radius: 4px;
-    padding: 20px 24px;
-    font-size: 15px;
-    line-height: 2.0;
-    color: var(--text-primary);
-    letter-spacing: 0.02em;
-  }
-
-  .lore-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 36px 44px;
-    position: relative;
-    overflow: hidden;
-  }
-  .lore-box::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--rarity-color, var(--accent)), transparent);
-  }
-  .lore-text {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 1.6em;
-    line-height: 2.4;
-    color: var(--text-primary);
-    word-break: keep-all;
-    overflow-wrap: break-word;
-    letter-spacing: 0.01em;
-  }
-  .lore-text p {
-    margin-bottom: 1.6em;
-  }
-  .lore-text p:last-child {
-    margin-bottom: 0;
-  }
-  .lore-text em { font-style: normal; color: #fff; }
-
-  /* rarity colors applied via JS class */
-  .rc-6 { --rarity-color: var(--r6); }
-  .rc-5 { --rarity-color: var(--r5); }
-  .rc-4 { --rarity-color: var(--r4); }
-  .rc-3 { --rarity-color: var(--r3); }
-
-  /* scrollbar global */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); }
-</style>
+<link rel="stylesheet" href="endfield_weapons.css">
 </head>
 <body>
 
+<!-- 모바일 드로어 오버레이 -->
+<div class="drawer-overlay" id="drawer-overlay"></div>
+
+<!-- ── HEADER ── -->
 <header>
+  <!-- 패널 토글 버튼 -->
+  <button class="panel-toggle" id="panel-toggle" title="목록 패널 열기/닫기" aria-label="목록 패널 열기/닫기">
+    <!-- 세 줄 아이콘 (햄버거 → 화살표) -->
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <line x1="2" y1="4"  x2="14" y2="4"/>
+      <line x1="2" y1="8"  x2="14" y2="8"/>
+      <line x1="2" y1="12" x2="14" y2="12"/>
+    </svg>
+  </button>
+
   <div>
     <div class="logo">ARKNIGHTS ENDFIELD</div>
     <div class="logo-main">무기 아카이브</div>
   </div>
   <div class="header-divider"></div>
+
+  <!-- 필터 -->
   <div class="filters">
     <div class="filter-group">
       <span class="filter-label">희귀도</span>
@@ -427,7 +39,7 @@
       <button class="filter-btn" data-rarity="4" style="color:var(--r4)">★4</button>
       <button class="filter-btn" data-rarity="3" style="color:var(--r3)">★3</button>
     </div>
-    <div class="header-divider" style="margin: 0 4px;"></div>
+    <div class="header-divider" style="margin:0 4px"></div>
     <div class="filter-group">
       <span class="filter-label">종류</span>
       <button class="filter-btn active" data-type="all">전체</button>
@@ -438,19 +50,25 @@
       <button class="filter-btn" data-type="아츠 유닛">아츠 유닛</button>
     </div>
   </div>
+
   <div class="search-box">
     <input type="text" id="search" placeholder="무기 검색...">
   </div>
 </header>
 
+<!-- ── MAIN ── -->
 <div class="main">
-  <div class="panel-left">
+
+  <!-- LEFT PANEL -->
+  <div class="panel-left" id="panel-left">
     <div class="panel-left-header">
       <span>WEAPONS</span>
       <span><span id="weapon-count">0</span> / 66</span>
     </div>
     <div class="weapon-list" id="weapon-list"></div>
   </div>
+
+  <!-- CENTER PANEL -->
   <div class="panel-center" id="panel-center">
     <div class="empty-state" id="empty-state">
       <div class="empty-state-icon">⚔</div>
@@ -458,52 +76,106 @@
     </div>
     <div class="weapon-detail" id="weapon-detail" style="display:none"></div>
   </div>
+
 </div>
 
+<!-- 모바일 FAB (목록 열기 버튼) -->
+<div class="fab-list" id="fab-list">
+  <button class="fab-btn" id="fab-open-list">
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <line x1="2" y1="4"  x2="14" y2="4"/>
+      <line x1="2" y1="8"  x2="14" y2="8"/>
+      <line x1="2" y1="12" x2="14" y2="12"/>
+    </svg>
+    목록
+  </button>
+</div>
+
+
+<!-- ── SCRIPT ── -->
 <script defer>
-let WEAPONS = [];
+/* ─────────────────────────────────
+   상수
+───────────────────────────────── */
+const RARITY_COLORS = { 6:'#ff7100', 5:'#ffcc00', 4:'#b380ff', 3:'#33C2FF' };
+const RARITY_LABELS = { 6:'★★★★★★', 5:'★★★★★', 4:'★★★★', 3:'★★★' };
+const TYPE_ICONS    = { '한손검':'⚔', '양손검':'⚔', '장병기':'🗡', '권총':'🔫', '아츠 유닛':'✦' };
 
-const RARITY_COLORS = {6:'#ff7100',5:'#ffcc00',4:'#b380ff',3:'#33C2FF'};
-const RARITY_LABELS = {6:'★★★★★★',5:'★★★★★',4:'★★★★',3:'★★★'};
-const TYPE_ICONS = {'한손검':'⚔','양손검':'⚔','장병기':'🗡','권총':'🔫','아츠 유닛':'✦'};
-
+/* ─────────────────────────────────
+   상태
+───────────────────────────────── */
+let WEAPONS      = [];
 let activeRarity = 'all';
-let activeType = 'all';
-let searchQuery = '';
-let selectedIdx = null;
+let activeType   = 'all';
+let searchQuery  = '';
+let selectedIdx  = null;
 
-/* -------------------------
-   초기 진입
-------------------------- */
-document.addEventListener('DOMContentLoaded', () => {
-  bindEvents();
-  loadWeapons();
-});
+/* ─────────────────────────────────
+   패널 토글 상태
+   PC:     body.panel-collapsed  → 패널 숨김
+   Mobile: body.panel-open       → 드로어 열림
+───────────────────────────────── */
+const isMobile = () => window.innerWidth <= 640;
 
-/* -------------------------
-   데이터 로드
-------------------------- */
-async function loadWeapons() {
-  try {
-    const res = await fetch('./data/endfield_weapons_lore.json');
-
-    if (!res.ok) {
-      throw new Error(`HTTP 오류: ${res.status}`);
-    }
-
-    WEAPONS = await res.json();
-    console.log('JSON 로드 완료:', WEAPONS.length);
-
-    renderList();
-  } catch (e) {
-    console.error('JSON 로드 실패:', e);
+function openPanel() {
+  if (isMobile()) {
+    document.body.classList.add('panel-open');
+  } else {
+    document.body.classList.remove('panel-collapsed');
+  }
+}
+function closePanel() {
+  if (isMobile()) {
+    document.body.classList.remove('panel-open');
+  } else {
+    document.body.classList.add('panel-collapsed');
+  }
+}
+function togglePanel() {
+  if (isMobile()) {
+    document.body.classList.contains('panel-open') ? closePanel() : openPanel();
+  } else {
+    document.body.classList.contains('panel-collapsed') ? openPanel() : closePanel();
   }
 }
 
-/* -------------------------
-   이벤트 바인딩
-------------------------- */
-function bindEvents() {
+/* ─────────────────────────────────
+   초기화
+───────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  bindPanelEvents();
+  bindFilterEvents();
+  loadWeapons();
+});
+
+/* ─────────────────────────────────
+   패널 이벤트
+───────────────────────────────── */
+function bindPanelEvents() {
+  // 헤더 토글 버튼
+  document.getElementById('panel-toggle')
+    .addEventListener('click', togglePanel);
+
+  // 모바일: 오버레이 클릭으로 닫기
+  document.getElementById('drawer-overlay')
+    .addEventListener('click', closePanel);
+
+  // 모바일 FAB — 목록 열기
+  document.getElementById('fab-open-list')
+    .addEventListener('click', openPanel);
+
+  // 화면 크기 변화 시 상태 초기화
+  window.addEventListener('resize', () => {
+    if (!isMobile()) {
+      document.body.classList.remove('panel-open');
+    }
+  });
+}
+
+/* ─────────────────────────────────
+   필터 이벤트
+───────────────────────────────── */
+function bindFilterEvents() {
   document.querySelectorAll('.filter-btn[data-rarity]').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn[data-rarity]').forEach(b => b.classList.remove('active'));
@@ -522,33 +194,44 @@ function bindEvents() {
     });
   });
 
-  const searchEl = document.getElementById('search');
-  if (searchEl) {
-    searchEl.addEventListener('input', e => {
-      searchQuery = e.target.value.trim();
-      renderList();
-    });
+  document.getElementById('search').addEventListener('input', e => {
+    searchQuery = e.target.value.trim();
+    renderList();
+  });
+}
+
+/* ─────────────────────────────────
+   데이터 로드
+───────────────────────────────── */
+async function loadWeapons() {
+  try {
+    const res = await fetch('./data/endfield_weapons_lore.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    WEAPONS = await res.json();
+    renderList();
+  } catch (e) {
+    console.error('JSON 로드 실패:', e);
+    document.getElementById('weapon-list').innerHTML =
+      '<div class="no-results">데이터를 불러올 수 없습니다</div>';
   }
 }
 
-/* -------------------------
+/* ─────────────────────────────────
    필터
-------------------------- */
+───────────────────────────────── */
 function getFiltered() {
   return WEAPONS.filter((w, i) => {
     w._origIdx = i;
-
     if (activeRarity !== 'all' && w.rarity !== parseInt(activeRarity)) return false;
-    if (activeType !== 'all' && w.type !== activeType) return false;
-    if (searchQuery && !w.name.includes(searchQuery)) return false;
-
+    if (activeType   !== 'all' && w.type   !== activeType)             return false;
+    if (searchQuery  && !w.name.includes(searchQuery))                 return false;
     return true;
   });
 }
 
-/* -------------------------
+/* ─────────────────────────────────
    리스트 렌더링
-------------------------- */
+───────────────────────────────── */
 function renderList() {
   const list = document.getElementById('weapon-list');
   if (!list) return;
@@ -564,8 +247,7 @@ function renderList() {
   list.innerHTML = filtered.map(w => {
     const color = RARITY_COLORS[w.rarity];
     const stars = '★'.repeat(w.rarity);
-    const sel = selectedIdx === w._origIdx ? 'selected' : '';
-
+    const sel   = selectedIdx === w._origIdx ? 'selected' : '';
     return `
       <div class="weapon-item ${sel}" data-idx="${w._origIdx}">
         <div class="rarity-dot" style="background:${color}"></div>
@@ -575,34 +257,33 @@ function renderList() {
             ${w.type} · <span class="rarity-stars" style="color:${color}">${stars}</span>
           </div>
         </div>
-      </div>
-    `;
+      </div>`;
   }).join('');
 
-  // 클릭 이벤트 (동적 바인딩)
   list.querySelectorAll('.weapon-item').forEach(el => {
     el.addEventListener('click', () => {
       selectWeapon(parseInt(el.dataset.idx));
+      // 모바일: 항목 선택 시 드로어 닫기
+      if (isMobile()) closePanel();
     });
   });
 }
 
-/* -------------------------
+/* ─────────────────────────────────
    상세 표시
-------------------------- */
+───────────────────────────────── */
 function selectWeapon(origIdx) {
   selectedIdx = origIdx;
   const w = WEAPONS[origIdx];
 
-  const empty = document.getElementById('empty-state');
+  document.getElementById('empty-state').style.display  = 'none';
   const detail = document.getElementById('weapon-detail');
-
-  if (empty) empty.style.display = 'none';
-  if (detail) detail.style.display = 'block';
+  detail.style.display = 'block';
 
   const color = RARITY_COLORS[w.rarity];
   const stars = RARITY_LABELS[w.rarity];
 
+  // 스토리 텍스트 정제
   let lore = w.lore || '';
   if (lore.startsWith('"') && lore.endsWith('"')) lore = lore.slice(1, -1);
   lore = lore.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
@@ -614,7 +295,7 @@ function selectWeapon(origIdx) {
     .map(p => `<p>${escHtml(p).replace(/\n/g, '<br>')}</p>`)
     .join('');
 
-  detail.className = 'weapon-detail rc-' + w.rarity;
+  detail.className = `weapon-detail rc-${w.rarity}`;
   detail.style.setProperty('--rarity-color', color);
 
   detail.innerHTML = `
@@ -643,15 +324,13 @@ function selectWeapon(origIdx) {
     </div>` : ''}
   `;
 
-  const panel = document.getElementById('panel-center');
-  if (panel) panel.scrollTo({ top: 0 });
-
+  document.getElementById('panel-center').scrollTo({ top: 0 });
   renderList(); // 선택 상태 갱신
 }
 
-/* -------------------------
+/* ─────────────────────────────────
    유틸
-------------------------- */
+───────────────────────────────── */
 function escHtml(str) {
   return str
     .replace(/&/g, '&amp;')
@@ -659,7 +338,6 @@ function escHtml(str) {
     .replace(/>/g, '&gt;');
 }
 </script>
-
 
 </body>
 </html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>생일 캘린더</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="header-title-block">
+    <h1>생일 캘린더</h1>
+  </div>
+
+  <div class="controls">
+    <div class="month-nav">
+      <button id="prevMonth">◀</button>
+      <span id="currentMonthLabel"></span>
+      <button id="nextMonth">▶</button>
+    </div>
+
+    <select id="monthSelect"></select>
+
+    <!-- 뷰 전환 -->
+    <div class="view-toggle">
+      <button id="monthViewBtn">월간</button>
+      <button id="weekViewBtn">주간</button>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- 사이드바 -->
+  <aside class="sidebar">
+    <input type="text" id="gameSearch" placeholder="게임 검색">
+    <div id="gameList"></div>
+  </aside>
+
+  <!-- 캘린더 -->
+  <main>
+    <div class="calendar-header-row">
+      <div>SUN</div><div>MON</div><div>TUE</div>
+      <div>WED</div><div>THU</div><div>FRI</div><div>SAT</div>
+    </div>
+    <div id="calendar"></div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

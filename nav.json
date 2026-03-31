@@ -16,7 +16,14 @@
     "label": "무기 아카이브",
     "path": "endfield/endfield_weapons.html",
     "icon": "◈"
-  },{
+  },
+  {
+    "category": "endfield",
+    "label": "오퍼레이터 파일 뷰어",
+    "path": "endfield/endfield_fileviewer.html",
+    "icon": "◈"
+  },
+  {
     "category": "other",
     "label": "캐릭터 생일 캘린더",
     "path": "other/character_birthday_calendar.html",

@@ -1,0 +1,640 @@
+/* ═══════════════════════════════════════════════
+   endfield_weapons.css
+   Arknights Endfield — 무기 아카이브 스타일시트
+   ═══════════════════════════════════════════════ */
+
+/* ── 구글 폰트 ── */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&family=Share+Tech+Mono&display=swap');
+
+/* ─────────────────────────────────────────────
+   CSS 변수
+───────────────────────────────────────────── */
+:root {
+  --bg:           #10111a;
+  --surface:      #161820;
+  --surface2:     #1c1f2b;
+  --surface3:     #222638;
+  --border:       #2a2f45;
+  --border-glow:  #353d5c;
+  --text-primary: #eaedf7;
+  --text-secondary:#b0b8d4;
+  --text-muted:   #5a6180;
+  --r6: #ff7100;
+  --r5: #ffcc00;
+  --r4: #b380ff;
+  --r3: #33C2FF;
+  --accent: #4a8be8;
+
+  /* 패널 너비 (PC) */
+  --panel-width: 260px;
+  /* 패널 접힘 전환 시간 */
+  --panel-transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─────────────────────────────────────────────
+   리셋 & 기본
+───────────────────────────────────────────── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Noto Sans KR', sans-serif;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 스크롤바 */
+::-webkit-scrollbar       { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+
+/* ─────────────────────────────────────────────
+   HEADER
+───────────────────────────────────────────── */
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 20;
+}
+header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.5;
+}
+
+/* 패널 토글 버튼 (항상 노출) */
+.panel-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.panel-toggle:hover {
+  border-color: var(--border-glow);
+  color: var(--text-primary);
+  background: var(--surface2);
+}
+.panel-toggle svg {
+  width: 16px; height: 16px;
+  transition: transform var(--panel-transition);
+}
+/* 패널이 닫혔을 때 아이콘 반전 */
+body.panel-collapsed .panel-toggle svg {
+  transform: scaleX(-1);
+}
+
+.logo {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+.logo-main {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+}
+.header-divider {
+  width: 1px; height: 32px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* ── 필터 ── */
+.filters {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+}
+.filter-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: 'Share Tech Mono', monospace;
+  white-space: nowrap;
+}
+.filter-group { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.filter-btn {
+  padding: 4px 10px;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.filter-btn:hover { border-color: var(--border-glow); color: var(--text-primary); }
+.filter-btn.active {
+  background: var(--surface3);
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+.filter-btn[data-rarity="6"].active { border-color: var(--r6); color: var(--r6); }
+.filter-btn[data-rarity="5"].active { border-color: var(--r5); color: var(--r5); }
+.filter-btn[data-rarity="4"].active { border-color: var(--r4); color: var(--r4); }
+.filter-btn[data-rarity="3"].active { border-color: var(--r3); color: var(--r3); }
+
+/* ── 검색 ── */
+.search-box {
+  margin-left: auto;
+  position: relative;
+  flex-shrink: 0;
+}
+.search-box input {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--text-primary);
+  padding: 5px 12px 5px 30px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  width: 160px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.search-box input:focus { border-color: var(--accent); }
+.search-box::before {
+  content: '🔍';
+  position: absolute;
+  left: 8px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  pointer-events: none;
+}
+
+
+/* ─────────────────────────────────────────────
+   메인 레이아웃
+───────────────────────────────────────────── */
+.main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+
+/* ─────────────────────────────────────────────
+   LEFT PANEL — PC 기본 (접기/펼치기)
+───────────────────────────────────────────── */
+.panel-left {
+  width: var(--panel-width);
+  min-width: var(--panel-width);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+  /* 슬라이드 전환 */
+  transition:
+    width var(--panel-transition),
+    min-width var(--panel-transition),
+    opacity var(--panel-transition);
+}
+
+/* 패널 접힘 상태 */
+body.panel-collapsed .panel-left {
+  width: 0;
+  min-width: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.panel-left-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+.panel-left-header span {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+#weapon-count { color: var(--accent); font-weight: 600; }
+
+.weapon-list {
+  overflow-y: auto;
+  flex: 1;
+  padding: 4px 0;
+}
+
+.weapon-item {
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.12s;
+  border-left: 3px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+.weapon-item:hover {
+  background: var(--surface2);
+  border-left-color: var(--border-glow);
+}
+.weapon-item.selected {
+  background: var(--surface3);
+  border-left-color: var(--accent);
+}
+.weapon-item.selected .weapon-name-list { color: #fff; }
+
+.rarity-dot {
+  width: 4px; height: 28px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.weapon-item-info { flex: 1; min-width: 0; }
+.weapon-name-list {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Noto Serif KR', serif;
+}
+.weapon-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: 0.5px;
+  margin-top: 3px;
+}
+.rarity-stars { font-size: 9px; letter-spacing: -1px; }
+
+.no-results {
+  padding: 40px 16px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+
+/* ─────────────────────────────────────────────
+   CENTER PANEL
+───────────────────────────────────────────── */
+.panel-center {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--bg);
+  position: relative;
+  min-width: 0;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-muted);
+  gap: 16px;
+  user-select: none;
+}
+.empty-state-icon { font-size: 48px; opacity: 0.2; }
+.empty-state-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.weapon-detail {
+  padding: 44px 60px 60px;
+  max-width: 900px;
+  animation: fadeIn 0.2s ease;
+}
+
+/* ── 상세 헤더 ── */
+.detail-header {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.detail-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0;
+  width: 80px; height: 1px;
+  background: var(--rarity-color, var(--accent));
+  transition: background 0.3s;
+}
+.detail-rarity-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 2px;
+  border: 1px solid;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+.detail-name {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+.detail-type-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.detail-type-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: 0.5px;
+}
+.detail-id {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+/* ── 섹션 ── */
+.section-block { margin-bottom: 36px; }
+.section-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── 설명 박스 ── */
+.desc-box {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--rarity-color, var(--border));
+  border-radius: 4px;
+  padding: 20px 24px;
+  font-size: 15px;
+  line-height: 2.0;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+
+/* ── 스토리 박스 ── */
+.lore-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 36px 44px;
+  position: relative;
+  overflow: hidden;
+}
+.lore-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--rarity-color, var(--accent)), transparent);
+}
+.lore-text {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 15.5px;
+  line-height: 2.4;
+  color: var(--text-primary);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  letter-spacing: 0.01em;
+}
+.lore-text p { margin-bottom: 1.6em; }
+.lore-text p:last-child { margin-bottom: 0; }
+.lore-text em { font-style: normal; color: #fff; }
+
+/* ── 희귀도별 CSS 변수 ── */
+.rc-6 { --rarity-color: var(--r6); }
+.rc-5 { --rarity-color: var(--r5); }
+.rc-4 { --rarity-color: var(--r4); }
+.rc-3 { --rarity-color: var(--r3); }
+
+
+/* ═══════════════════════════════════════════════
+   모바일 드로어 오버레이 (기본 숨김)
+═══════════════════════════════════════════════ */
+.drawer-overlay {
+  display: none;
+}
+
+
+/* ═══════════════════════════════════════════════
+   반응형 — 태블릿 (≤ 900px)
+═══════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  /* 필터 일부 축소 */
+  .filters { gap: 6px; }
+  .filter-label { display: none; }
+  .search-box input { width: 120px; }
+
+  .weapon-detail {
+    padding: 32px 32px 48px;
+  }
+  .detail-name { font-size: 26px; }
+  .lore-box { padding: 28px 28px; }
+  .lore-text { font-size: 14.5px; }
+}
+
+
+/* ═══════════════════════════════════════════════
+   반응형 — 모바일 (≤ 640px)
+═══════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  /* body overflow 허용 (드로어 방식으로 전환) */
+  body { overflow: hidden; }
+
+  /* ── 헤더 ── */
+  header {
+    padding: 10px 14px;
+    gap: 10px;
+    flex-wrap: wrap;
+    height: auto;
+  }
+  .logo { font-size: 9px; }
+  .logo-main { font-size: 15px; }
+
+  /* 필터 영역: 헤더 아래 두 번째 줄로 */
+  .filters {
+    order: 3;
+    width: 100%;
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
+    gap: 5px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .filters::-webkit-scrollbar { display: none; }
+
+  /* 검색창 */
+  .search-box { margin-left: 0; }
+  .search-box input { width: 110px; font-size: 11px; }
+
+  /* 헤더 구분선 숨김 */
+  .header-divider { display: none; }
+
+  /* ── LEFT PANEL → 모바일 드로어 ── */
+  .panel-left {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 100;
+    width: 80vw;
+    max-width: 320px;
+    min-width: unset;
+    transform: translateX(-100%);
+    transition: transform var(--panel-transition), opacity var(--panel-transition);
+    opacity: 1;
+    /* PC 슬라이드 전환 덮어쓰기 */
+    width: 80vw !important;
+    min-width: unset !important;
+  }
+  /* 모바일: 드로어 열림 */
+  body.panel-open .panel-left {
+    transform: translateX(0);
+  }
+  /* 모바일: 패널-collapsed 클래스 무시 (드로어는 별도 관리) */
+  body.panel-collapsed .panel-left {
+    width: 80vw !important;
+    min-width: unset !important;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* 반투명 오버레이 */
+  .drawer-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 99;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--panel-transition);
+    backdrop-filter: blur(2px);
+  }
+  body.panel-open .drawer-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ── 상세 패널 ── */
+  .panel-center { width: 100%; }
+
+  .weapon-detail {
+    padding: 24px 18px 48px;
+  }
+  .detail-name { font-size: 22px; }
+  .detail-rarity-badge { font-size: 9px; }
+
+  .desc-box { font-size: 14px; padding: 16px 16px; }
+  .lore-box { padding: 22px 18px; }
+  .lore-text { font-size: 14px; line-height: 2.2; }
+
+  /* 스토리 읽는 중 패널 닫기 버튼 — 우하단 FAB */
+  .fab-list {
+    display: flex;
+    position: fixed;
+    bottom: 24px; right: 20px;
+    z-index: 50;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
+  }
+  .fab-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--surface3);
+    border: 1px solid var(--border-glow);
+    border-radius: 24px;
+    color: var(--text-secondary);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    transition: all 0.15s;
+  }
+  .fab-btn:hover, .fab-btn:active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+}
+
+/* PC에서 FAB 숨김 */
+@media (min-width: 641px) {
+  .fab-list { display: none !important; }
+  .drawer-overlay { display: none !important; }
+}

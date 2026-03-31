@@ -1,0 +1,20 @@
+[
+  {
+    "category": "index",
+    "label": "Archive",
+    "path": "index.html",
+    "icon": "◎"
+  },
+  {
+    "category": "arknights",
+    "label": "오퍼레이터 생일 캘린더",
+    "path": "arknights/arknights_birthday_calendar.html",
+    "icon": "◈"
+  },
+  {
+    "category": "endfield",
+    "label": "무기 아카이브",
+    "path": "endfield/endfield_weapons.html",
+    "icon": "◈"
+  }
+]

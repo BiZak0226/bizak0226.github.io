@@ -1,26 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>Birthday Calendar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>오퍼레이터 생일 캘린더 — Arknights</title>
   <link rel="stylesheet" href="style.css">
   <script src="../nav.js" data-depth="1"></script>
 </head>
 <body>
-  <header>
-    <h1>Character Birthday Calendar</h1>
-    <div class="controls">
-      <button id="prevMonth">◀</button>
-      <select id="monthSelect"></select>
-      <button id="nextMonth">▶</button>
 
+  <header>
+    <div class="header-title-block">
+      <div class="header-eyebrow">Arknights</div>
+      <h1>오퍼레이터 생일 캘린더</h1>
+    </div>
+
+    <div class="header-divider"></div>
+
+    <div class="controls">
+      <!-- 월 이동 -->
+      <div class="month-nav">
+        <button id="prevMonth" title="이전 달">◀</button>
+        <span id="currentMonthLabel"></span>
+        <button id="nextMonth" title="다음 달">▶</button>
+      </div>
+
+      <!-- 월 직접 선택 -->
+      <select id="monthSelect" title="월 선택"></select>
+
+      <div class="controls-divider"></div>
+
+      <!-- 작품 필터 -->
+      <span class="filter-label-text">작품</span>
       <select id="workFilter">
-        <option value="all">All Works</option>
+        <option value="all">전체</option>
       </select>
     </div>
   </header>
 
   <main>
+    <!-- 요일 헤더 -->
+    <div class="calendar-header-row">
+      <div class="dow-label">SUN</div>
+      <div class="dow-label">MON</div>
+      <div class="dow-label">TUE</div>
+      <div class="dow-label">WED</div>
+      <div class="dow-label">THU</div>
+      <div class="dow-label">FRI</div>
+      <div class="dow-label">SAT</div>
+    </div>
+
     <div id="calendar"></div>
   </main>
 

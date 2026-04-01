@@ -20,7 +20,7 @@
   {
     "category": "endfield",
     "label": "오퍼레이터 파일 뷰어",
-    "path": "endfield/endfield_fileviewer.html",
+    "path": "endfield/endfield_operator_file.html",
     "icon": "◈"
   },
   {

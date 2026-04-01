@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f6f3;
+    --surface: #ffffff;
+    --surface-2: #f0efe9;
+    --border: #e2e0d8;
+    --border-strong: #ccc9be;
+    --text: #1a1916;
+    --text-2: #6b6860;
+    --text-3: #9b9890;
+    --accent: #2a5cff;
+    --accent-soft: #eef1ff;
+    --accent-border: #b8c5ff;
+    --green: #1a7a4a;
+    --green-soft: #edf7f2;
+    --orange: #c4580f;
+    --orange-soft: #fdf3ed;
+    --purple: #7c3aed;
+    --purple-soft: #f3eeff;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+    --shadow: 0 4px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+    --radius: 10px;
+    --font-sans: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 16px;
+  }
+
+  .header {
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .header h1 {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    color: var(--text);
+  }
+
+  .header-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-3);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    padding: 3px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+
+  .main {
+    width: 100%;
+    max-width: 900px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+  }
+
+  .panel-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--text-3);
+  }
+
+  .panel-body { padding: 16px; }
+
+  textarea {
+    width: 100%;
+    height: 140px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    color: var(--text);
+    resize: none;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  textarea:focus {
+    border-color: var(--accent-border);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  .btn-row { display: flex; gap: 8px; margin-top: 12px; align-items: center; }
+
+  .btn {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    padding: 7px 14px;
+    transition: all 0.15s;
+    letter-spacing: -0.1px;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 1px 3px rgba(42,92,255,0.3);
+  }
+  .btn-primary:hover { background: #1e4fef; transform: translateY(-1px); box-shadow: 0 3px 8px rgba(42,92,255,0.35); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-2);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover { background: var(--surface-2); border-color: var(--border-strong); color: var(--text); }
+  .btn-ghost.active { background: var(--accent-soft); border-color: var(--accent-border); color: var(--accent); }
+
+  .view-tabs { display: flex; gap: 4px; }
+
+  /* Node tree */
+  .node-wrap { padding: 12px; }
+
+  .node {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 6px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .node-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--surface-2);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .node-type-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.3px;
+    flex-shrink: 0;
+  }
+  .badge-object { background: var(--accent-soft); color: var(--accent); }
+  .badge-array  { background: var(--purple-soft); color: var(--purple); }
+  .badge-string { background: var(--green-soft); color: var(--green); }
+  .badge-number { background: var(--orange-soft); color: var(--orange); }
+  .badge-bool   { background: #fff7e6; color: #b45309; }
+  .badge-null   { background: var(--surface-2); color: var(--text-3); }
+
+  .node-key {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .node-value-inline {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-2);
+    margin-left: auto;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .node-children { padding: 8px 8px 4px 16px; }
+
+  .chevron {
+    width: 14px; height: 14px;
+    color: var(--text-3);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .chevron.open { transform: rotate(90deg); }
+
+  /* Value node */
+  .value-node {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    background: var(--surface);
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    margin-bottom: 5px;
+  }
+
+  .value-input {
+    flex: 1;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 4px 8px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+    min-width: 0;
+  }
+  .value-input:focus { border-color: var(--accent-border); }
+
+  /* Output */
+  .output-panel .panel-body { padding: 0; }
+  pre {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.8;
+    padding: 16px;
+    color: var(--text);
+    overflow: auto;
+    max-height: 480px;
+    tab-size: 2;
+  }
+
+  .empty-state {
+    padding: 40px 16px;
+    text-align: center;
+    color: var(--text-3);
+    font-size: 13px;
+  }
+  .empty-state svg { margin: 0 auto 12px; display: block; opacity: 0.3; }
+
+  .divider { width: 1px; height: 16px; background: var(--border); }
+
+  .copy-btn {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--text-2);
+    cursor: pointer;
+    font-family: var(--font-sans);
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { background: var(--surface-2); color: var(--text); }
+
+  .count-chip {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 2px 7px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text-3);
+    margin-left: auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo-dot"></div>
+    <h1>JSON Editor</h1>
+  </div>
+  <span class="header-badge">v1.0</span>
+</div>
+
+<div class="main">
+  <!-- Input Panel -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-title">Input</span>
+      <div class="view-tabs">
+        <button class="btn btn-ghost active" onclick="setView('block', this)">블록</button>
+        <button class="btn btn-ghost" onclick="setView('tree', this)">트리</button>
+        <button class="btn btn-ghost" onclick="setView('table', this)">테이블</button>
+      </div>
+    </div>
+    <div class="panel-body">
+      <textarea id="jsonInput">{"name":"홍길동","age":20,"skills":["JS","Python"],"address":{"city":"서울","zip":"04524"}}</textarea>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="loadJson()">Load JSON</button>
+        <button class="btn btn-ghost" onclick="formatInput()">Format</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Output Panel -->
+  <div class="panel output-panel">
+    <div class="panel-header">
+      <span class="panel-title">Output</span>
+      <button class="copy-btn" onclick="copyOutput()">Copy</button>
+    </div>
+    <div id="outputArea">
+      <div class="empty-state">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+        JSON을 입력하고 Load 버튼을 눌러주세요
+      </div>
+    </div>
+  </div>
+
+  <!-- Tree Panel -->
+  <div class="panel" style="grid-column: 1 / -1;">
+    <div class="panel-header">
+      <span class="panel-title">Visual Editor</span>
+      <span class="count-chip" id="nodeCount">—</span>
+    </div>
+    <div class="node-wrap" id="treeArea">
+      <div class="empty-state" style="padding: 28px;">
+        트리 에디터가 여기 표시됩니다
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let treeData = null;
+let viewMode = 'block';
+
+function uuidv4() {
+  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+}
+
+function jsonToTree(data, key = null) {
+  if (Array.isArray(data)) {
+    return { id: uuidv4(), type: 'array', key, children: data.map((item) => jsonToTree(item)) };
+  } else if (typeof data === 'object' && data !== null) {
+    return { id: uuidv4(), type: 'object', key, children: Object.entries(data).map(([k, v]) => jsonToTree(v, k)) };
+  } else {
+    return { id: uuidv4(), type: 'value', key, value: data, valueType: typeof data };
+  }
+}
+
+function treeToJson(node) {
+  if (node.type === 'value') return node.value;
+  if (node.type === 'array') return node.children.map(treeToJson);
+  if (node.type === 'object') {
+    const obj = {};
+    node.children.forEach(c => { obj[c.key] = treeToJson(c); });
+    return obj;
+  }
+}
+
+function getTypeBadge(type, valueType) {
+  if (type === 'object') return '<span class="node-type-badge badge-object">object</span>';
+  if (type === 'array')  return '<span class="node-type-badge badge-array">array</span>';
+  if (valueType === 'string')  return '<span class="node-type-badge badge-string">string</span>';
+  if (valueType === 'number')  return '<span class="node-type-badge badge-number">number</span>';
+  if (valueType === 'boolean') return '<span class="node-type-badge badge-bool">bool</span>';
+  return '<span class="node-type-badge badge-null">null</span>';
+}
+
+function renderNode(node, depth = 0) {
+  if (node.type === 'value') {
+    const vt = node.valueType || typeof node.value;
+    return `
+      <div class="value-node">
+        ${getTypeBadge(node.type, vt)}
+        ${node.key !== null ? `<span class="node-key">${node.key}</span>` : ''}
+        <input class="value-input" data-id="${node.id}" value="${String(node.value).replace(/"/g,'&quot;')}" oninput="updateValue('${node.id}', this.value)" />
+      </div>`;
+  }
+
+  const count = node.children ? node.children.length : 0;
+  const label = node.key !== null ? node.key : (node.type === 'array' ? `[${count}]` : `{${count}}`);
+
+  return `
+    <div class="node">
+      <div class="node-head" onclick="toggleNode('${node.id}', this)">
+        <svg class="chevron open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+        ${getTypeBadge(node.type)}
+        <span class="node-key">${label}</span>
+        <span class="node-value-inline" style="color:var(--text-3);font-size:11px;">${count} item${count !== 1 ? 's' : ''}</span>
+      </div>
+      <div class="node-children" id="children-${node.id}">
+        ${node.children.map(c => renderNode(c, depth + 1)).join('')}
+      </div>
+    </div>`;
+}
+
+function toggleNode(id, headEl) {
+  const children = document.getElementById('children-' + id);
+  const chevron = headEl.querySelector('.chevron');
+  if (children.style.display === 'none') {
+    children.style.display = '';
+    chevron.classList.add('open');
+  } else {
+    children.style.display = 'none';
+    chevron.classList.remove('open');
+  }
+}
+
+function updateValue(id, val) {
+  function update(node) {
+    if (node.id === id) {
+      let parsed = val;
+      if (!isNaN(val) && val.trim() !== '') { parsed = Number(val); }
+      else if (val === 'true') parsed = true;
+      else if (val === 'false') parsed = false;
+      else if (val === 'null') parsed = null;
+      return { ...node, value: parsed, valueType: typeof parsed };
+    }
+    if (node.children) return { ...node, children: node.children.map(update) };
+    return node;
+  }
+  treeData = update(treeData);
+  updateOutput();
+}
+
+function countNodes(node) {
+  if (node.type === 'value') return 1;
+  return 1 + (node.children || []).reduce((a, c) => a + countNodes(c), 0);
+}
+
+function loadJson() {
+  try {
+    const parsed = JSON.parse(document.getElementById('jsonInput').value);
+    treeData = jsonToTree(parsed);
+    renderTree();
+    updateOutput();
+  } catch(e) {
+    document.getElementById('jsonInput').style.borderColor = '#ef4444';
+    setTimeout(() => document.getElementById('jsonInput').style.borderColor = '', 1000);
+  }
+}
+
+function formatInput() {
+  try {
+    const parsed = JSON.parse(document.getElementById('jsonInput').value);
+    document.getElementById('jsonInput').value = JSON.stringify(parsed, null, 2);
+  } catch(e) {}
+}
+
+function renderTree() {
+  if (!treeData) return;
+  document.getElementById('treeArea').innerHTML = renderNode(treeData);
+  document.getElementById('nodeCount').textContent = countNodes(treeData) + ' nodes';
+}
+
+function updateOutput() {
+  if (!treeData) return;
+  const json = treeToJson(treeData);
+  document.getElementById('outputArea').innerHTML = `<pre>${JSON.stringify(json, null, 2)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre>`;
+}
+
+function copyOutput() {
+  if (!treeData) return;
+  navigator.clipboard.writeText(JSON.stringify(treeToJson(treeData), null, 2));
+  const btn = document.querySelector('.copy-btn');
+  btn.textContent = 'Copied!';
+  setTimeout(() => btn.textContent = 'Copy', 1500);
+}
+
+function setView(mode, btn) {
+  viewMode = mode;
+  document.querySelectorAll('.view-tabs .btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// Auto-load on start
+window.onload = () => loadJson();
+</script>
+</body>
+</html>

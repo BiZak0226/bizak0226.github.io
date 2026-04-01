@@ -26,7 +26,13 @@
   {
     "category": "other",
     "label": "캐릭터 생일 캘린더",
-    "path": "other/character_birthday_calendar.html",
+    "path": "other/character_birthday_calendar/character_birthday_calendar.html",
+    "icon": "◈"
+  },
+  {
+    "category": "other",
+    "label": "JSON 편집기",
+    "path": "other/json_editor/index.html",
     "icon": "◈"
   }
 ]

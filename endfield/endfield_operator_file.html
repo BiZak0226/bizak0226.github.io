@@ -252,7 +252,7 @@ function selectOperator(origIdx) {
 
   // description 정제
   let desc = op.description || '';
-  if (desc.startsWith('"') && desc.endsWith('"')) desc = desc.slice(1, -1);
+  //if (desc.startsWith('"') && desc.endsWith('"')) desc = desc.slice(1, -1);
   desc = desc.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
   const descParagraphs = desc
     .split(/\n{2,}/)

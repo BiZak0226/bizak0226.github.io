@@ -281,10 +281,31 @@ body {
 .card-top {
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
   margin-bottom: 10px;
 }
+
+
+.card-image-wrap {
+  width: 120px;
+  /* height: 150px; */
+  flex-shrink: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+}
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.card-main {
+  flex: 1;
+  min-width: 0;
+}
+
 .item-name {
   font-size: 16px;
   font-weight: 700;
@@ -513,11 +534,22 @@ function renderMain() {
     const orderId = item.orderId || item.id || '';
     return `<div class="card">
       <div class="card-top">
-        <div class="item-name">${esc(item.name||'')}${isNew ? '<span class="new-badge">NEW</span>' : ''}</div>
-        <div class="item-id">#${esc(orderId)}</div>
+        ${item.imgSrc ? `
+          <div class="card-image-wrap">
+            <img class="card-image" src="${esc(item.imgSrc)}" alt="${esc(item.name||'')}">
+          </div>
+        ` : ''}
+
+        <div class="card-main">
+          <div style="display:flex;justify-content:space-between;gap:10px;">
+            <div class="item-name">${esc(item.name||'')}${isNew ? '<span class="new-badge">NEW</span>' : ''}</div>
+            <div class="item-id">#${esc(orderId)}</div>
+          </div>
+
+          <div class="item-usage">${esc(item.usage||'')}</div>
+          <div class="item-desc">${esc(item.desc||'')}</div>
+        </div>
       </div>
-      <div class="item-usage">${esc(item.usage||'')}</div>
-      <div class="item-desc">${esc(item.desc||'')}</div>
     </div>`;
   }).join('');
 

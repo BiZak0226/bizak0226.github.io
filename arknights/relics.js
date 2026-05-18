@@ -9,8 +9,6 @@
 const IS_META = {
   is2: { label:'IS:2', title:'팬텀 & 크림슨 솔리테어',
          color:'#c0243c', colorBg:'rgba(192,36,60,0.18)' },
-  is3: { label:'IS:3', title:'미즈키 & 카이룰라 아버',
-         color:'#023AA7', colorBg:'rgba(2,58,167,0.15)' },
   is4: { label:'IS:4', title:'탐험가의 은빛 서리 끝자락',
          color:'#7ec8e8', colorBg:'rgba(126,200,232,0.15)' },
   is5: { label:'IS:5', title:'살카즈의 영겁 기담',
@@ -86,23 +84,34 @@ function renderMobileCatBar() {
   if (activePill) activePill.scrollIntoView({inline:'center',block:'nearest'});
 }
 
-// rogue 번호 → 폴더명 매핑
+// rogue 번호 → 이미지 폴더 매핑 (신NEW id 체계 기준)
+// rogue_2 = IS2, rogue_3 = IS3, rogue_4 = IS4, rogue_5 = IS5, rogue_6 = IS6
 const ROGUE_FOLDER = {
-  'rogue_3': 'is4',
-  'rogue_4': 'is5',
-  'rogue_5': 'is6',
+  'rogue_2': 'showroom/relics', // IS2: assets/img/showroom/relics/{orderId}.png
+  'rogue_3': 'is3',
+  'rogue_4': 'is4',
+  'rogue_5': 'is5',
+  'rogue_6': 'is6',
 };
 
-// 확장자 없는 base 경로 반환 (renderCard에서 webp/png 둘 다 시도)
+// 확장자 없는 base 경로 반환 (renderCard에서 webp → png 순으로 시도)
 function getImgBase(item) {
-  if (item.imgSrc) {
-    // 기존 imgSrc에서 확장자 제거
-    return item.imgSrc.replace(/\.(png|webp)$/i, '');
+  // 신NEW: img 필드 우선
+  const imgField = item.img || item.imgSrc || '';
+  if (imgField) {
+    return imgField.replace(/\.(png|webp)$/i, '');
   }
+  // img 필드가 비어 있을 경우 id로 자동 생성
   if (item.id && item.id.startsWith('rogue_')) {
-    const rogueKey = item.id.slice(0, 7); // "rogue_3", "rogue_4", "rogue_5"
+    const rogueKey = item.id.slice(0, 7); // "rogue_2" ~ "rogue_6"
     const folder = ROGUE_FOLDER[rogueKey];
-    if (folder) return 'assets/img/' + folder + '/' + item.id;
+    if (!folder) return null;
+    if (folder === 'showroom/relics') {
+      // IS2: 파일명은 orderId (001, 002, ..., PCS01, ...)
+      const fileId = item.orderId || item.id.split('_').pop();
+      return 'assets/img/showroom/relics/' + fileId;
+    }
+    return 'assets/img/' + folder + '/' + item.id;
   }
   return null;
 }

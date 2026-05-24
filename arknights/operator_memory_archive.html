@@ -1,0 +1,599 @@
+<!DOCTYPE html><html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arknights Memory Reader</title>  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Pretendard", "Noto Sans KR", sans-serif;
+      background: #0b1020;
+      color: #f4f4f5;
+      overflow: hidden;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      height: 100vh;
+    }
+
+    .mobile-header {
+      display: none;
+      height: 64px;
+      align-items: center;
+      padding: 0 16px;
+      gap: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: #0b1020;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .mobile-title {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .menu-button {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: white;
+      font-size: 20px;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.2s;
+      z-index: 45;
+    }
+
+    .overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .sidebar {
+      border-right: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .main {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .logo {
+      margin-bottom: 24px;
+    }
+
+    .logo h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .logo p {
+      color: #94a3b8;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .section {
+      margin-bottom: 28px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .file-item {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 14px;
+      color: white;
+      text-align: left;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .file-item:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(34,211,238,0.4);
+      transform: translateY(-1px);
+    }
+
+    .file-item.active {
+      background: rgba(34,211,238,0.12);
+      border-color: rgba(34,211,238,0.5);
+    }
+
+    .file-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .file-desc {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .filter-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: #e2e8f0;
+    }
+
+    .stats {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    .stat-label {
+      color: #94a3b8;
+    }
+
+    .topbar {
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .topbar-left h2 {
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .topbar-left p {
+      color: #94a3b8;
+      font-size: 14px;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .search {
+      width: 260px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: white;
+      outline: none;
+    }
+
+    .search:focus {
+      border-color: rgba(34,211,238,0.6);
+    }
+
+    .button {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: white;
+      padding: 12px 16px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .button:hover {
+      background: rgba(255,255,255,0.14);
+    }
+
+    .file-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: calc(100vh - 260px);
+      overflow-y: auto;
+    }
+
+    .search-file {
+      width: 100%;
+      margin-bottom: 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: white;
+      outline: none;
+    }
+
+    .search-file:focus {
+      border-color: rgba(34,211,238,0.5);
+    }
+
+    .viewer {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .empty-state {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #94a3b8;
+      padding: 40px;
+    }
+
+    .empty-icon {
+      font-size: 54px;
+      margin-bottom: 20px;
+    }
+
+    .empty-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: white;
+    }
+
+    .empty-text {
+      line-height: 1.8;
+    }
+
+    .dialogue {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 18px;
+      transition: 0.2s;
+    }
+
+    .dialogue:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .speaker {
+      color: #67e8f9;
+      font-weight: 700;
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+
+    .narration {
+      color: #cbd5e1;
+      line-height: 1.9;
+      padding: 8px 4px 18px;
+      font-size: 15px;
+    }
+
+    .dialogue-text {
+      line-height: 1.8;
+      color: #f1f5f9;
+      white-space: pre-wrap;
+    }
+
+    
+
+    @media (max-width: 900px) {
+      body {
+        overflow: auto;
+      }
+
+      .mobile-header {
+        display: flex;
+      }
+
+      .app {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+
+      .sidebar {
+        position: fixed;
+        left: -320px;
+        top: 0;
+        width: 300px;
+        height: 100vh;
+        z-index: 50;
+        transition: 0.25s;
+      }
+
+      .sidebar.open {
+        left: 0;
+      }
+
+      .topbar {
+        padding: 18px;
+      }
+
+      .viewer {
+        padding: 16px;
+      }
+
+      .dialogue {
+        padding: 16px;
+        border-radius: 18px;
+      }
+
+      .speaker {
+        font-size: 14px;
+      }
+
+      .dialogue-text {
+        font-size: 15px;
+        line-height: 1.85;
+      }
+    }
+
+      .sidebar {
+        display: none;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .topbar-right {
+        width: 100%;
+      }
+
+      .search {
+        width: 100%;
+      }
+    }
+  </style></head>
+<body>
+  <div class="mobile-header">
+    <button class="menu-button" id="menuButton">☰</button>
+    <div class="mobile-title">Memory Reader</div>
+  </div>  <div class="overlay" id="overlay"></div>  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="logo">
+        <h1>Memory Reader</h1>
+        <p>
+          memory 폴더 내부 TXT 자동 열람<br>
+          모바일 대응 스토리 뷰어
+        </p>
+      </div><div class="section">
+    <div class="section-title">Story Files</div>
+
+    <input
+      type="text"
+      class="search-file"
+      id="fileSearch"
+      placeholder="파일 검색..."
+    >
+
+    <div class="file-list" id="fileList"></div>
+  </div>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <div class="topbar-left">
+      <h2 id="currentTitle">파일을 선택하세요</h2>
+      <p id="currentDesc">memory/*.txt</p>
+    </div>
+  </header>
+
+  <section class="viewer" id="viewer">
+    <div class="empty-state">
+      <div class="empty-icon">📖</div>
+      <div class="empty-title">스토리 파일 선택</div>
+      <div class="empty-text">
+        좌측 목록에서 TXT 파일을 선택하면<br>
+        읽기 편한 형태로 자동 렌더링됩니다.
+      </div>
+    </div>
+  </section>
+</main>
+
+  </div>  <script>
+    const storyFiles = [
+      'story_wyvern_1_1.txt',
+      'story_wyvern_1_2.txt',
+      'story_whispr_1_1.txt',
+      'story_windft_1_1.txt',
+      'story_wildmn_1_1.txt',
+      'story_kalts_1.txt',
+      'story_amiya_1.txt',
+      'story_nearl_1.txt',
+      'story_ling_1.txt',
+      'story_nian_1.txt'
+    ];
+
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const menuButton = document.getElementById('menuButton');
+    const viewer = document.getElementById('viewer');
+    const fileList = document.getElementById('fileList');
+    const fileSearch = document.getElementById('fileSearch');
+
+    // 모바일 메뉴
+    menuButton.addEventListener('click', () => {
+      sidebar.classList.add('open');
+      overlay.classList.add('show');
+    });
+
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('show');
+    });
+
+    // 파일 리스트 생성
+    function renderFileList(files) {
+      fileList.innerHTML = '';
+
+      files.forEach(file => {
+        const item = document.createElement('button');
+        item.className = 'file-item';
+
+        item.innerHTML = `
+          <div class="file-name">${file}</div>
+          <div class="file-desc">TXT Story Script</div>
+        `;
+
+        item.addEventListener('click', () => {
+          document
+            .querySelectorAll('.file-item')
+            .forEach(el => el.classList.remove('active'));
+
+          item.classList.add('active');
+
+          loadStory(file);
+
+          sidebar.classList.remove('open');
+          overlay.classList.remove('show');
+        });
+
+        fileList.appendChild(item);
+      });
+    }
+
+    // 검색
+    fileSearch.addEventListener('input', (e) => {
+      const keyword = e.target.value.toLowerCase();
+
+      const filtered = storyFiles.filter(file =>
+        file.toLowerCase().includes(keyword)
+      );
+
+      renderFileList(filtered);
+    });
+
+    // 대사 파싱
+    function parseStory(content) {
+      const lines = content.split('
+');
+      const parsed = [];
+
+      lines.forEach(line => {
+        const trimmed = line.trim();
+
+        if (!trimmed) return;
+
+        const dialogueMatch = trimmed.match(/^name="(.+?)"(.+)$/);
+
+        if (dialogueMatch) {
+          parsed.push({
+            type: 'dialogue',
+            speaker: dialogueMatch[1],
+            text: dialogueMatch[2]
+          });
+        }
+
+        // 순수 텍스트만 허용
+        else if (!trimmed.startsWith('[')) {
+          parsed.push({
+            type: 'text',
+            text: trimmed
+          });
+        }
+      });
+
+      return parsed;
+    }
+
+    // 렌더링
+    function renderStory(parsed) {
+      viewer.innerHTML = '';
+
+      parsed.forEach(item => {
+        if (item.type === 'dialogue') {
+          const card = document.createElement('div');
+          card.className = 'dialogue';
+
+          card.innerHTML = `
+            <div class="speaker">${item.speaker}</div>
+            <div class="dialogue-text">${item.text}</div>
+          `;
+
+          viewer.appendChild(card);
+        }
+
+        else {
+          const text = document.createElement('div');
+          text.className = 'narration';
+          text.textContent = item.text;
+
+          viewer.appendChild(text);
+        }
+      });
+    }
+
+    // 파일 로드
+    async function loadStory(fileName) {
+      try {
+        const response = await fetch(`./memory/${fileName}`);
+        const text = await response.text();
+
+        document.getElementById('currentTitle').textContent = fileName;
+        document.getElementById('currentDesc').textContent = `memory/${fileName}`;
+
+        const parsed = parseStory(text);
+        renderStory(parsed);
+      }
+
+      catch(error) {
+        viewer.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">⚠️</div>
+            <div class="empty-title">파일 로드 실패</div>
+            <div class="empty-text">
+              memory/${fileName} 파일을 찾을 수 없습니다.
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    renderFileList(storyFiles);
+  </script></body>
+</html>

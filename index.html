@@ -4,9 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Archive Index</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<script src="nav.js" data-depth="0"></script>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&family=Share+Tech+Mono&display=swap"
+  rel="stylesheet"
+>
+
+<!-- 수정 -->
+<script defer src="./nav.js" data-depth="0"></script>
+
 <style>
   :root {
     --bg: #10111a;
@@ -22,7 +30,15 @@
     --accent-dim: #4a8be820;
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
 
   body {
     background: var(--bg);
@@ -31,167 +47,243 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+
+    /* 모바일 가로밀림 방지 */
+    overflow-x: hidden;
   }
 
-  /* ── 배경 격자 텍스처 ── */
+  /* ── 배경 텍스처 ── */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
+
     background-image:
       linear-gradient(var(--border) 1px, transparent 1px),
       linear-gradient(90deg, var(--border) 1px, transparent 1px);
+
     background-size: 48px 48px;
+
     opacity: 0.18;
+
     pointer-events: none;
     z-index: 0;
   }
 
-  /* ── HEADER ── */
+  /* ───────────────── HEADER ───────────────── */
+
   header {
     position: relative;
     z-index: 1;
+
     background: var(--surface);
+
     border-bottom: 1px solid var(--border);
+
     padding: 18px 32px;
+
     display: flex;
     align-items: center;
     gap: 20px;
+
     flex-shrink: 0;
   }
+
   header::after {
     content: '';
+
     position: absolute;
-    bottom: 0; left: 0; right: 0;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+
+    background:
+      linear-gradient(
+        90deg,
+        transparent,
+        var(--accent),
+        transparent
+      );
+
     opacity: 0.5;
   }
+
   .logo-eyebrow {
     font-family: 'Share Tech Mono', monospace;
     font-size: 10px;
     color: var(--text-muted);
+
     letter-spacing: 2.5px;
     text-transform: uppercase;
+
     line-height: 1.4;
   }
+
   .logo-main {
     font-family: 'Noto Serif KR', serif;
     font-size: 20px;
     font-weight: 700;
+
     color: var(--text-primary);
+
     letter-spacing: 1px;
   }
+
   .header-divider {
-    width: 1px; height: 36px;
+    width: 1px;
+    height: 36px;
+
     background: var(--border);
   }
+
   .header-desc {
     font-size: 12px;
     color: var(--text-muted);
+
     font-family: 'Share Tech Mono', monospace;
+
     letter-spacing: 0.5px;
     line-height: 1.7;
   }
 
-  /* ── MAIN WRAPPER ── */
+  /* ───────────────── MAIN ───────────────── */
+
   main {
     position: relative;
     z-index: 1;
+
     flex: 1;
+
     display: flex;
     justify-content: center;
+
     padding: 56px 24px 80px;
   }
 
-  /* 중앙 컨텐츠 최대 너비 제한 */
   .content {
     width: 100%;
     max-width: 760px;
   }
 
-  /* ── PAGE TITLE ── */
+  /* ───────────────── TITLE ───────────────── */
+
   .page-title-area {
     margin-bottom: 48px;
     animation: fadeUp 0.4s ease both;
   }
+
   .page-title {
     font-family: 'Noto Serif KR', serif;
     font-size: 28px;
     font-weight: 700;
+
     color: #fff;
+
     letter-spacing: 1px;
+
     margin-bottom: 8px;
   }
+
   .page-subtitle {
     font-family: 'Share Tech Mono', monospace;
     font-size: 11px;
+
     color: var(--text-muted);
+
     letter-spacing: 2px;
     text-transform: uppercase;
   }
 
-  /* ── FILE LIST ── */
+  /* ───────────────── FILE LIST ───────────────── */
+
   ul.file-list {
     list-style: none;
+
     display: flex;
     flex-direction: column;
+
     gap: 28px;
   }
 
-  /* 카테고리 (폴더) */
   li.category {
     animation: fadeUp 0.4s ease both;
   }
+
   li.category:nth-child(1) { animation-delay: 0.05s; }
   li.category:nth-child(2) { animation-delay: 0.10s; }
   li.category:nth-child(3) { animation-delay: 0.15s; }
   li.category:nth-child(4) { animation-delay: 0.20s; }
   li.category:nth-child(5) { animation-delay: 0.25s; }
 
+  /* ───────────────── CATEGORY ───────────────── */
+
   .category-header {
     display: flex;
     align-items: center;
     gap: 10px;
+
     margin-bottom: 10px;
     padding-bottom: 10px;
+
     border-bottom: 1px solid var(--border);
+
     position: relative;
   }
+
   .category-header::after {
     content: '';
+
     position: absolute;
-    bottom: -1px; left: 0;
-    width: 48px; height: 1px;
+
+    left: 0;
+    bottom: -1px;
+
+    width: 48px;
+    height: 1px;
+
     background: var(--accent);
+
     opacity: 0.7;
   }
+
   .category-icon {
     font-size: 13px;
     opacity: 0.6;
   }
+
   .category-name {
     font-family: 'Share Tech Mono', monospace;
     font-size: 11px;
+
     color: var(--accent);
+
     letter-spacing: 2px;
     text-transform: uppercase;
   }
+
   .category-count {
     margin-left: auto;
+
     font-family: 'Share Tech Mono', monospace;
     font-size: 10px;
+
     color: var(--text-muted);
+
     letter-spacing: 1px;
   }
 
-  /* 카테고리 내 항목 목록 */
+  /* ───────────────── ENTRY LIST ───────────────── */
+
   ul.entry-list {
     list-style: none;
+
     display: flex;
     flex-direction: column;
+
     gap: 4px;
-    padding-left: 0;
   }
 
   li.entry {
@@ -200,100 +292,232 @@
 
   li.entry a {
     flex: 1;
+
     display: flex;
     align-items: center;
     gap: 14px;
+
     padding: 13px 18px;
+
     background: var(--surface);
+
     border: 1px solid var(--border);
     border-radius: 4px;
+
     text-decoration: none;
+
     color: var(--text-secondary);
+
     font-size: 14px;
-    transition: all 0.15s ease;
+
+    transition:
+      background 0.15s ease,
+      border-color 0.15s ease,
+      transform 0.15s ease,
+      color 0.15s ease;
+
     position: relative;
     overflow: hidden;
   }
+
   li.entry a::before {
     content: '';
+
     position: absolute;
-    left: 0; top: 0; bottom: 0;
+
+    left: 0;
+    top: 0;
+    bottom: 0;
+
     width: 3px;
+
     background: var(--accent);
+
     opacity: 0;
+
     transition: opacity 0.15s;
   }
-  li.entry a:hover {
-    background: var(--surface2);
-    border-color: var(--border-glow);
-    color: var(--text-primary);
-    transform: translateX(3px);
-  }
-  li.entry a:hover::before {
-    opacity: 1;
+
+  /* hover 가능한 환경에서만 */
+  @media (hover: hover) {
+
+    li.entry a:hover {
+      background: var(--surface2);
+      border-color: var(--border-glow);
+
+      color: var(--text-primary);
+
+      transform: translateX(3px);
+    }
+
+    li.entry a:hover::before {
+      opacity: 1;
+    }
+
+    li.entry a:hover .entry-file-icon {
+      opacity: 0.9;
+    }
+
+    li.entry a:hover .entry-path {
+      color: var(--accent);
+    }
+
+    li.entry a:hover .entry-arrow {
+      color: var(--accent);
+      transform: translateX(3px);
+    }
   }
 
   .entry-file-icon {
     font-size: 14px;
+
     flex-shrink: 0;
+
     opacity: 0.5;
+
     transition: opacity 0.15s;
   }
-  li.entry a:hover .entry-file-icon { opacity: 0.9; }
 
   .entry-label {
     font-family: 'Noto Serif KR', serif;
     font-size: 14px;
     font-weight: 500;
+
     flex: 1;
+
     letter-spacing: 0.3px;
   }
 
   .entry-path {
     font-family: 'Share Tech Mono', monospace;
     font-size: 10px;
+
     color: var(--text-muted);
+
     letter-spacing: 0.5px;
+
     transition: color 0.15s;
+
     white-space: nowrap;
   }
-  li.entry a:hover .entry-path { color: var(--accent); }
 
   .entry-arrow {
     font-size: 12px;
+
     color: var(--text-muted);
+
     transition: all 0.15s;
+
     flex-shrink: 0;
   }
-  li.entry a:hover .entry-arrow {
-    color: var(--accent);
-    transform: translateX(3px);
-  }
 
-  /* ── FOOTER ── */
+  /* ───────────────── FOOTER ───────────────── */
+
   footer {
     position: relative;
     z-index: 1;
+
     border-top: 1px solid var(--border);
+
     padding: 16px 32px;
+
     display: flex;
     justify-content: center;
     align-items: center;
   }
+
   footer span {
     font-family: 'Share Tech Mono', monospace;
     font-size: 10px;
+
     color: var(--text-muted);
+
     letter-spacing: 1.5px;
     text-transform: uppercase;
   }
 
+  /* ───────────────── ANIMATION ───────────────── */
+
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ───────────────── MOBILE ───────────────── */
+
+  @media (max-width: 768px) {
+
+    header {
+      padding: 16px;
+
+      flex-direction: column;
+      align-items: flex-start;
+
+      gap: 12px;
+    }
+
+    .header-divider {
+      display: none;
+    }
+
+    .logo-main {
+      font-size: 18px;
+    }
+
+    .header-desc {
+      font-size: 11px;
+    }
+
+    main {
+      padding: 32px 14px 56px;
+    }
+
+    .page-title-area {
+      margin-bottom: 32px;
+    }
+
+    .page-title {
+      font-size: 24px;
+    }
+
+    ul.file-list {
+      gap: 20px;
+    }
+
+    li.entry a {
+      padding: 14px;
+      gap: 12px;
+    }
+
+    .entry-label {
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* 모바일에서 경로 숨김 */
+    .entry-path {
+      display: none;
+    }
+
+    footer {
+      padding: 14px;
+    }
+
+    footer span {
+      text-align: center;
+      line-height: 1.7;
+    }
   }
 </style>
 </head>
+
 <body>
 
 <header>
@@ -301,7 +525,9 @@
     <div class="logo-eyebrow">GitHub Pages</div>
     <div class="logo-main">Archive</div>
   </div>
+
   <div class="header-divider"></div>
+
   <div class="header-desc">
     프로젝트 파일 인덱스<br>
     파일을 선택하여 해당 페이지로 이동합니다
@@ -315,48 +541,77 @@
       <div class="page-subtitle">/ index</div>
       <div class="page-title">파일 목록</div>
     </div>
+
     <ul class="file-list">
 
+      <!-- arknights -->
       <li class="category">
+
         <div class="category-header">
           <span class="category-icon">📁</span>
           <span class="category-name">arknights</span>
-          <span class="category-count">1 file</span>
+          <span class="category-count">2 files</span>
         </div>
+
         <ul class="entry-list">
+
           <li class="entry">
             <a href="arknights/arknights_birthday_calendar.html">
               <span class="entry-file-icon">◈</span>
-              <span class="entry-label">오퍼레이터 생일 캘린더</span>
-              <span class="entry-path">arknights/arknights_birthday_calendar.html</span>
+              <span class="entry-label">
+                오퍼레이터 생일 캘린더
+              </span>
+
+              <span class="entry-path">
+                arknights/arknights_birthday_calendar.html
+              </span>
+
               <span class="entry-arrow">→</span>
             </a>
           </li>
+
           <li class="entry">
             <a href="arknights/is-relics.html">
               <span class="entry-file-icon">◈</span>
-              <span class="entry-label">통합 전략 소장품</span>
-              <span class="entry-path">arknights/is-relics.html</span>
+
+              <span class="entry-label">
+                통합 전략 소장품
+              </span>
+
+              <span class="entry-path">
+                arknights/is-relics.html
+              </span>
+
               <span class="entry-arrow">→</span>
             </a>
           </li>
+
         </ul>
       </li>
 
-      <!-- 예시 카테고리: endfield -->
+      <!-- endfield -->
       <li class="category">
+
         <div class="category-header">
           <span class="category-icon">📁</span>
           <span class="category-name">endfield</span>
-          <span class="category-count">1 file</span>
+          <span class="category-count">2 files</span>
         </div>
+
         <ul class="entry-list">
 
           <li class="entry">
             <a href="endfield/endfield_weapons.html">
               <span class="entry-file-icon">◈</span>
-              <span class="entry-label">무기 아카이브</span>
-              <span class="entry-path">endfield/endfield_weapons.html</span>
+
+              <span class="entry-label">
+                무기 아카이브
+              </span>
+
+              <span class="entry-path">
+                endfield/endfield_weapons.html
+              </span>
+
               <span class="entry-arrow">→</span>
             </a>
           </li>
@@ -364,80 +619,76 @@
           <li class="entry">
             <a href="endfield/endfield_fileviewer.html">
               <span class="entry-file-icon">◈</span>
-              <span class="entry-label">오퍼레이터 파일 뷰어</span>
-              <span class="entry-path">endfield/endfield_fileviewer.html</span>
-              <span class="entry-arrow">→</span>
-            </a>
-          </li>
 
-          <!-- 새 항목 추가 예시 (주석 처리):
-          <li class="entry">
-            <a href="endfield/endfield_operators.html">
-              <span class="entry-file-icon">◈</span>
-              <span class="entry-label">오퍼레이터 목록</span>
-              <span class="entry-path">endfield/endfield_operators.html</span>
+              <span class="entry-label">
+                오퍼레이터 파일 뷰어
+              </span>
+
+              <span class="entry-path">
+                endfield/endfield_fileviewer.html
+              </span>
+
               <span class="entry-arrow">→</span>
             </a>
           </li>
-          -->
 
         </ul>
       </li>
 
+      <!-- 기타 -->
       <li class="category">
+
         <div class="category-header">
           <span class="category-icon">📁</span>
           <span class="category-name">기타</span>
-          <span class="category-count">2 file</span>
+          <span class="category-count">2 files</span>
         </div>
+
         <ul class="entry-list">
+
           <li class="entry">
             <a href="other/character_birthday_calendar/character_birthday_calendar.html">
               <span class="entry-file-icon">◈</span>
-              <span class="entry-label">캐릭터 생일 캘린더</span>
-              <span class="entry-path">other/character_birthday_calendar/character_birthday_calendar.html</span>
+
+              <span class="entry-label">
+                캐릭터 생일 캘린더
+              </span>
+
+              <span class="entry-path">
+                other/character_birthday_calendar/character_birthday_calendar.html
+              </span>
+
               <span class="entry-arrow">→</span>
             </a>
           </li>
+
           <li class="entry">
             <a href="other/json_editor/index.html">
               <span class="entry-file-icon">◈</span>
-              <span class="entry-label">JSON 편집기</span>
-              <span class="entry-path">other/json_editor/index.html</span>
-              <span class="entry-arrow">→</span>
-            </a>
-          </li>
-        </ul>
-      </li>
 
-      <!-- 새 카테고리 추가 예시 (주석 처리):
-      <li class="category">
-        <div class="category-header">
-          <span class="category-icon">📁</span>
-          <span class="category-name">category-name</span>
-          <span class="category-count">0 files</span>
-        </div>
-        <ul class="entry-list">
-          <li class="entry">
-            <a href="category/file.html">
-              <span class="entry-file-icon">◈</span>
-              <span class="entry-label">파일 제목</span>
-              <span class="entry-path">category/file.html</span>
+              <span class="entry-label">
+                JSON 편집기
+              </span>
+
+              <span class="entry-path">
+                other/json_editor/index.html
+              </span>
+
               <span class="entry-arrow">→</span>
             </a>
           </li>
+
         </ul>
       </li>
-      -->
 
     </ul>
-    <!-- /file-list -->
-
   </div>
 </main>
 
 <footer>
-  <span>Static Archive · GitHub Pages</span>
+  <span>
+    Static Archive · GitHub Pages
+  </span>
 </footer>
 
 </body>

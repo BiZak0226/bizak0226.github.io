@@ -18,6 +18,12 @@
     "icon": "◈"
   },
   {
+    "category": "arknights",
+    "label": "오퍼레이터 레코드",
+    "path": "arknights/operator_memory_archieve.html",
+    "icon": "◈"
+  },
+  {
     "category": "endfield",
     "label": "무기 아카이브",
     "path": "endfield/endfield_weapons.html",

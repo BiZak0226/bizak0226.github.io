@@ -1,599 +1,783 @@
-<!DOCTYPE html><html lang="ko">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arknights Memory Reader</title>  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
 
-    body {
-      font-family: "Pretendard", "Noto Sans KR", sans-serif;
-      background: #0b1020;
-      color: #f4f4f5;
-      overflow: hidden;
-    }
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+/>
 
-    .app {
-      display: grid;
-      grid-template-columns: 320px 1fr;
-      height: 100vh;
-    }
+<title>Operator Memory Archive</title>
 
-    .mobile-header {
-      display: none;
-      height: 64px;
-      align-items: center;
-      padding: 0 16px;
-      gap: 14px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      background: #0b1020;
-      position: sticky;
-      top: 0;
-      z-index: 40;
-    }
+<link rel="preconnect" href="https://fonts.googleapis.com">
 
-    .mobile-title {
-      font-size: 18px;
-      font-weight: 700;
-    }
+<link
+  href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@500;700&family=Share+Tech+Mono&display=swap"
+  rel="stylesheet"
+>
 
-    .menu-button {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: rgba(255,255,255,0.05);
-      color: white;
-      font-size: 20px;
-    }
+<style>
 
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      opacity: 0;
-      pointer-events: none;
-      transition: 0.2s;
-      z-index: 45;
-    }
+:root{
+  --bg:#0d1018;
+  --surface:#151925;
+  --surface2:#1b2130;
 
-    .overlay.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
+  --border:#2b3247;
+  --border2:#3b4767;
 
-    .sidebar {
-      border-right: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.03);
-      backdrop-filter: blur(10px);
-      padding: 20px;
-      overflow-y: auto;
-    }
+  --text:#edf1ff;
+  --text-dim:#9ca7c7;
+  --text-fade:#5f6886;
 
-    .main {
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
+  --accent:#5d93ff;
 
-    .logo {
-      margin-bottom: 24px;
-    }
+  --sidebar-width:300px;
+}
 
-    .logo h1 {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
+/* ───────────────── RESET ───────────────── */
 
-    .logo p {
-      color: #94a3b8;
-      line-height: 1.5;
-      font-size: 14px;
-    }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-    .section {
-      margin-bottom: 28px;
-    }
+html{
+  scroll-behavior:smooth;
+}
 
-    .section-title {
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: #cbd5e1;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
+body{
+  background:var(--bg);
+  color:var(--text);
 
-    .file-item {
-      width: 100%;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 16px;
-      padding: 14px;
-      color: white;
-      text-align: left;
-      margin-bottom: 10px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+  font-family:'Noto Sans KR', sans-serif;
 
-    .file-item:hover {
-      background: rgba(255,255,255,0.08);
-      border-color: rgba(34,211,238,0.4);
-      transform: translateY(-1px);
-    }
+  min-height:100vh;
 
-    .file-item.active {
-      background: rgba(34,211,238,0.12);
-      border-color: rgba(34,211,238,0.5);
-    }
+  overflow-x:hidden;
+}
 
-    .file-name {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
+/* ───────────────── BG GRID ───────────────── */
 
-    .file-desc {
-      font-size: 12px;
-      color: #94a3b8;
-    }
+body::before{
+  content:'';
 
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+  position:fixed;
+  inset:0;
 
-    .filter-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 14px;
-      color: #e2e8f0;
-    }
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
 
-    .stats {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+  background-size:40px 40px;
 
-    .stat-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 14px;
-    }
+  pointer-events:none;
 
-    .stat-label {
-      color: #94a3b8;
-    }
+  touch-action:none;
 
-    .topbar {
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      padding: 18px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      background: rgba(255,255,255,0.03);
-    }
+  z-index:0;
+}
 
-    .topbar-left h2 {
-      font-size: 22px;
-      margin-bottom: 4px;
-    }
+/* ───────────────── HEADER ───────────────── */
 
-    .topbar-left p {
-      color: #94a3b8;
-      font-size: 14px;
-    }
+.header{
+  position:sticky;
+  top:0;
 
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+  z-index:120;
 
-    .search {
-      width: 260px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px;
-      padding: 12px 14px;
-      color: white;
-      outline: none;
-    }
+  height:64px;
 
-    .search:focus {
-      border-color: rgba(34,211,238,0.6);
-    }
+  display:flex;
+  align-items:center;
+  gap:14px;
 
-    .button {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: white;
-      padding: 12px 16px;
-      border-radius: 14px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+  padding:0 18px;
 
-    .button:hover {
-      background: rgba(255,255,255,0.14);
-    }
+  background:rgba(12,15,24,0.9);
 
-    .file-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-height: calc(100vh - 260px);
-      overflow-y: auto;
-    }
+  backdrop-filter:blur(10px);
 
-    .search-file {
-      width: 100%;
-      margin-bottom: 14px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px;
-      padding: 12px 14px;
-      color: white;
-      outline: none;
-    }
+  border-bottom:1px solid var(--border);
+}
 
-    .search-file:focus {
-      border-color: rgba(34,211,238,0.5);
-    }
+.menu-button{
+  width:42px;
+  height:42px;
 
-    .viewer {
-      flex: 1;
-      overflow-y: auto;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
+  border:none;
+  outline:none;
 
-    .empty-state {
-      min-height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: #94a3b8;
-      padding: 40px;
-    }
+  border-radius:12px;
 
-    .empty-icon {
-      font-size: 54px;
-      margin-bottom: 20px;
-    }
+  background:rgba(255,255,255,0.05);
 
-    .empty-title {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: white;
-    }
+  color:white;
 
-    .empty-text {
-      line-height: 1.8;
-    }
+  font-size:20px;
 
-    .dialogue {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 20px;
-      padding: 18px;
-      transition: 0.2s;
-    }
+  cursor:pointer;
 
-    .dialogue:hover {
-      background: rgba(255,255,255,0.05);
-    }
+  position:relative;
+  z-index:200;
+}
 
-    .speaker {
-      color: #67e8f9;
-      font-weight: 700;
-      margin-bottom: 10px;
-      font-size: 15px;
-    }
+.title-area{
+  display:flex;
+  flex-direction:column;
+}
 
-    .narration {
-      color: #cbd5e1;
-      line-height: 1.9;
-      padding: 8px 4px 18px;
-      font-size: 15px;
-    }
+.title-eyebrow{
+  font-size:10px;
 
-    .dialogue-text {
-      line-height: 1.8;
-      color: #f1f5f9;
-      white-space: pre-wrap;
-    }
+  letter-spacing:2px;
 
-    
+  color:var(--text-fade);
 
-    @media (max-width: 900px) {
-      body {
-        overflow: auto;
-      }
+  text-transform:uppercase;
 
-      .mobile-header {
-        display: flex;
-      }
+  font-family:'Share Tech Mono', monospace;
+}
 
-      .app {
-        grid-template-columns: 1fr;
-        height: auto;
-      }
+.title-main{
+  font-size:18px;
+  font-weight:700;
 
-      .sidebar {
-        position: fixed;
-        left: -320px;
-        top: 0;
-        width: 300px;
-        height: 100vh;
-        z-index: 50;
-        transition: 0.25s;
-      }
+  font-family:'Noto Serif KR', serif;
+}
 
-      .sidebar.open {
-        left: 0;
-      }
+/* ───────────────── SIDEBAR ───────────────── */
 
-      .topbar {
-        padding: 18px;
-      }
+.sidebar{
+  position:fixed;
 
-      .viewer {
-        padding: 16px;
-      }
+  left:-320px;
+  top:0;
 
-      .dialogue {
-        padding: 16px;
-        border-radius: 18px;
-      }
+  width:var(--sidebar-width);
+  height:100vh;
 
-      .speaker {
-        font-size: 14px;
-      }
+  background:#121722;
 
-      .dialogue-text {
-        font-size: 15px;
-        line-height: 1.85;
-      }
-    }
+  border-right:1px solid var(--border);
 
-      .sidebar {
-        display: none;
-      }
+  z-index:150;
 
-      .topbar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+  transition:left 0.25s ease;
 
-      .topbar-right {
-        width: 100%;
-      }
+  display:flex;
+  flex-direction:column;
+}
 
-      .search {
-        width: 100%;
-      }
-    }
-  </style></head>
+.sidebar.open{
+  left:0;
+}
+
+.sidebar-header{
+  height:64px;
+
+  display:flex;
+  align-items:center;
+
+  padding:0 20px;
+
+  border-bottom:1px solid var(--border);
+}
+
+.sidebar-title{
+  font-size:14px;
+
+  letter-spacing:2px;
+
+  color:var(--accent);
+
+  font-family:'Share Tech Mono', monospace;
+}
+
+.search-wrap{
+  padding:16px;
+  border-bottom:1px solid var(--border);
+}
+
+.search-input{
+  width:100%;
+
+  padding:12px 14px;
+
+  border-radius:12px;
+
+  border:1px solid var(--border2);
+
+  background:#0d1119;
+
+  color:white;
+
+  outline:none;
+}
+
+.file-list{
+  flex:1;
+
+  overflow-y:auto;
+
+  list-style:none;
+
+  padding:10px;
+}
+
+.file-item{
+  margin-bottom:6px;
+}
+
+.file-button{
+  width:100%;
+
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  padding:12px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:transparent;
+
+  color:var(--text-dim);
+
+  text-align:left;
+
+  cursor:pointer;
+
+  transition:0.15s;
+}
+
+.file-button:active{
+  transform:scale(0.98);
+}
+
+.file-button:hover{
+  background:rgba(255,255,255,0.04);
+
+  color:var(--text);
+}
+
+.file-icon{
+  opacity:0.6;
+}
+
+.file-name{
+  flex:1;
+
+  font-size:13px;
+
+  line-height:1.5;
+}
+
+/* ───────────────── OVERLAY ───────────────── */
+
+.overlay{
+  position:fixed;
+  inset:0;
+
+  background:rgba(0,0,0,0.45);
+
+  opacity:0;
+  pointer-events:none;
+
+  transition:0.2s;
+
+  z-index:140;
+}
+
+.overlay.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+/* ───────────────── MAIN ───────────────── */
+
+.main{
+  position:relative;
+  z-index:1;
+
+  width:100%;
+
+  display:flex;
+  justify-content:center;
+
+  padding:28px 14px 120px;
+}
+
+.reader{
+  width:100%;
+  max-width:860px;
+}
+
+/* ───────────────── INTRO ───────────────── */
+
+.intro{
+  margin-bottom:28px;
+}
+
+.intro-eyebrow{
+  font-size:11px;
+
+  letter-spacing:2px;
+
+  color:var(--text-fade);
+
+  text-transform:uppercase;
+
+  font-family:'Share Tech Mono', monospace;
+
+  margin-bottom:8px;
+}
+
+.intro-title{
+  font-size:30px;
+  font-weight:700;
+
+  font-family:'Noto Serif KR', serif;
+
+  margin-bottom:10px;
+}
+
+.intro-desc{
+  color:var(--text-dim);
+
+  line-height:1.8;
+
+  font-size:14px;
+}
+
+/* ───────────────── STORY ───────────────── */
+
+.story-area{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.dialogue{
+  background:var(--surface);
+
+  border:1px solid var(--border);
+
+  border-radius:18px;
+
+  padding:18px;
+}
+
+.dialogue-name{
+  font-size:12px;
+
+  color:var(--accent);
+
+  letter-spacing:1px;
+
+  margin-bottom:10px;
+
+  font-family:'Share Tech Mono', monospace;
+}
+
+.dialogue-text{
+  line-height:2;
+
+  font-size:15px;
+
+  word-break:keep-all;
+}
+
+.narration{
+  padding:4px 8px;
+
+  color:var(--text-dim);
+
+  line-height:2;
+
+  font-size:15px;
+}
+
+/* ───────────────── MOBILE ───────────────── */
+
+@media(max-width:768px){
+
+  .header{
+    padding:0 14px;
+  }
+
+  .intro-title{
+    font-size:24px;
+  }
+
+  .dialogue{
+    padding:16px;
+    border-radius:16px;
+  }
+
+  .dialogue-text{
+    font-size:14px;
+  }
+
+  .narration{
+    font-size:14px;
+  }
+
+}
+
+</style>
+</head>
+
 <body>
-  <div class="mobile-header">
-    <button class="menu-button" id="menuButton">☰</button>
-    <div class="mobile-title">Memory Reader</div>
-  </div>  <div class="overlay" id="overlay"></div>  <div class="app">
-    <aside class="sidebar" id="sidebar">
-      <div class="logo">
-        <h1>Memory Reader</h1>
-        <p>
-          memory 폴더 내부 TXT 자동 열람<br>
-          모바일 대응 스토리 뷰어
-        </p>
-      </div><div class="section">
-    <div class="section-title">Story Files</div>
+
+<!-- ───────────────── HEADER ───────────────── -->
+
+<header class="header">
+
+  <button
+    class="menu-button"
+    id="menuButton"
+    aria-label="menu"
+  >
+    ☰
+  </button>
+
+  <div class="title-area">
+    <div class="title-eyebrow">
+      Arknights Archive
+    </div>
+
+    <div class="title-main">
+      Operator Memory
+    </div>
+  </div>
+
+</header>
+
+<!-- ───────────────── SIDEBAR ───────────────── -->
+
+<aside
+  class="sidebar"
+  id="sidebar"
+>
+
+  <div class="sidebar-header">
+    <div class="sidebar-title">
+      MEMORY FILES
+    </div>
+  </div>
+
+  <div class="search-wrap">
 
     <input
       type="text"
-      class="search-file"
-      id="fileSearch"
+      class="search-input"
+      id="searchInput"
       placeholder="파일 검색..."
     >
 
-    <div class="file-list" id="fileList"></div>
   </div>
+
+  <ul
+    class="file-list"
+    id="fileList"
+  ></ul>
+
 </aside>
 
-<main class="main">
-  <header class="topbar">
-    <div class="topbar-left">
-      <h2 id="currentTitle">파일을 선택하세요</h2>
-      <p id="currentDesc">memory/*.txt</p>
-    </div>
-  </header>
+<!-- ───────────────── OVERLAY ───────────────── -->
 
-  <section class="viewer" id="viewer">
-    <div class="empty-state">
-      <div class="empty-icon">📖</div>
-      <div class="empty-title">스토리 파일 선택</div>
-      <div class="empty-text">
-        좌측 목록에서 TXT 파일을 선택하면<br>
-        읽기 편한 형태로 자동 렌더링됩니다.
+<div
+  class="overlay"
+  id="overlay"
+></div>
+
+<!-- ───────────────── MAIN ───────────────── -->
+
+<main class="main">
+
+  <div class="reader">
+
+    <section class="intro">
+
+      <div class="intro-eyebrow">
+        / operator memory archive
       </div>
-    </div>
-  </section>
+
+      <h1 class="intro-title">
+        오퍼레이터 기록 열람
+      </h1>
+
+      <div class="intro-desc">
+        좌측 메뉴에서 파일을 선택하세요.<br>
+        연출 및 커맨드는 제거되고 텍스트만 표시됩니다.
+      </div>
+
+    </section>
+
+    <section
+      class="story-area"
+      id="storyArea"
+    ></section>
+
+  </div>
+
 </main>
 
-  </div>  <script>
-    const storyFiles = [
-      'story_wyvern_1_1.txt',
-      'story_wyvern_1_2.txt',
-      'story_whispr_1_1.txt',
-      'story_windft_1_1.txt',
-      'story_wildmn_1_1.txt',
-      'story_kalts_1.txt',
-      'story_amiya_1.txt',
-      'story_nearl_1.txt',
-      'story_ling_1.txt',
-      'story_nian_1.txt'
-    ];
+<script>
 
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
-    const menuButton = document.getElementById('menuButton');
-    const viewer = document.getElementById('viewer');
-    const fileList = document.getElementById('fileList');
-    const fileSearch = document.getElementById('fileSearch');
+(function(){
 
-    // 모바일 메뉴
-    menuButton.addEventListener('click', () => {
-      sidebar.classList.add('open');
-      overlay.classList.add('show');
+/* ───────────────── ELEMENTS ───────────────── */
+
+var menuButton =
+  document.getElementById('menuButton');
+
+var sidebar =
+  document.getElementById('sidebar');
+
+var overlay =
+  document.getElementById('overlay');
+
+var fileList =
+  document.getElementById('fileList');
+
+var storyArea =
+  document.getElementById('storyArea');
+
+var searchInput =
+  document.getElementById('searchInput');
+
+/* ───────────────── MENU ───────────────── */
+
+function openMenu(){
+
+  sidebar.classList.add('open');
+
+  overlay.classList.add('show');
+}
+
+function closeMenu(){
+
+  sidebar.classList.remove('open');
+
+  overlay.classList.remove('show');
+}
+
+menuButton.addEventListener('click', openMenu);
+
+overlay.addEventListener('click', closeMenu);
+
+/* ───────────────── FILE LIST ───────────────── */
+
+var files = [];
+
+/*
+memory/filelist.json 예시
+
+[
+  "amiya.txt",
+  "chen.txt",
+  "texas.txt"
+]
+*/
+
+fetch('../memory/filelist.json')
+
+.then(function(res){
+  return res.json();
+})
+
+.then(function(data){
+
+  files = data;
+
+  renderFileList(files);
+
+})
+
+.catch(function(err){
+
+  console.error(err);
+
+  fileList.innerHTML =
+    '<li style="padding:16px;color:#ff8080;">파일 목록 로드 실패</li>';
+
+});
+
+/* ───────────────── RENDER FILE LIST ───────────────── */
+
+function renderFileList(list){
+
+  fileList.innerHTML = '';
+
+  list.forEach(function(file){
+
+    var li =
+      document.createElement('li');
+
+    li.className = 'file-item';
+
+    var button =
+      document.createElement('button');
+
+    button.className = 'file-button';
+
+    button.innerHTML =
+      '<span class="file-icon">◈</span>' +
+      '<span class="file-name">' +
+      file.replace('.txt','') +
+      '</span>';
+
+    button.addEventListener('click', function(){
+
+      loadStory(file);
+
+      closeMenu();
+
     });
 
-    overlay.addEventListener('click', () => {
-      sidebar.classList.remove('open');
-      overlay.classList.remove('show');
+    li.appendChild(button);
+
+    fileList.appendChild(li);
+
+  });
+
+}
+
+/* ───────────────── SEARCH ───────────────── */
+
+searchInput.addEventListener('input', function(){
+
+  var keyword =
+    this.value.toLowerCase();
+
+  var filtered =
+    files.filter(function(file){
+
+      return file
+        .toLowerCase()
+        .includes(keyword);
+
     });
 
-    // 파일 리스트 생성
-    function renderFileList(files) {
-      fileList.innerHTML = '';
+  renderFileList(filtered);
 
-      files.forEach(file => {
-        const item = document.createElement('button');
-        item.className = 'file-item';
+});
 
-        item.innerHTML = `
-          <div class="file-name">${file}</div>
-          <div class="file-desc">TXT Story Script</div>
-        `;
+/* ───────────────── LOAD STORY ───────────────── */
 
-        item.addEventListener('click', () => {
-          document
-            .querySelectorAll('.file-item')
-            .forEach(el => el.classList.remove('active'));
+function loadStory(filename){
 
-          item.classList.add('active');
+  fetch('../memory/' + filename)
 
-          loadStory(file);
+  .then(function(res){
+    return res.text();
+  })
 
-          sidebar.classList.remove('open');
-          overlay.classList.remove('show');
-        });
+  .then(function(text){
 
-        fileList.appendChild(item);
-      });
+    renderStory(text);
+
+  })
+
+  .catch(function(err){
+
+    console.error(err);
+
+    storyArea.innerHTML =
+      '<div class="narration">파일 로드 실패</div>';
+
+  });
+
+}
+
+/* ───────────────── PARSE STORY ───────────────── */
+
+function renderStory(content){
+
+  storyArea.innerHTML = '';
+
+  var lines =
+    content.split('\n');
+
+  lines.forEach(function(line){
+
+    var trimmed =
+      line.trim();
+
+    if(!trimmed){
+      return;
     }
 
-    // 검색
-    fileSearch.addEventListener('input', (e) => {
-      const keyword = e.target.value.toLowerCase();
+    /*
+      [name="Amiya"] text
+    */
 
-      const filtered = storyFiles.filter(file =>
-        file.toLowerCase().includes(keyword)
-      );
+    var match =
+      trimmed.match(/^\[name="(.+?)"\](.+)$/);
 
-      renderFileList(filtered);
-    });
+    if(match){
 
-    // 대사 파싱
-    function parseStory(content) {
-      const lines = content.split('
-');
-      const parsed = [];
+      var card =
+        document.createElement('div');
 
-      lines.forEach(line => {
-        const trimmed = line.trim();
+      card.className = 'dialogue';
 
-        if (!trimmed) return;
+      card.innerHTML =
+        '<div class="dialogue-name">' +
+        match[1] +
+        '</div>' +
 
-        const dialogueMatch = trimmed.match(/^name="(.+?)"(.+)$/);
+        '<div class="dialogue-text">' +
+        escapeHtml(match[2]) +
+        '</div>';
 
-        if (dialogueMatch) {
-          parsed.push({
-            type: 'dialogue',
-            speaker: dialogueMatch[1],
-            text: dialogueMatch[2]
-          });
-        }
+      storyArea.appendChild(card);
 
-        // 순수 텍스트만 허용
-        else if (!trimmed.startsWith('[')) {
-          parsed.push({
-            type: 'text',
-            text: trimmed
-          });
-        }
-      });
-
-      return parsed;
+      return;
     }
 
-    // 렌더링
-    function renderStory(parsed) {
-      viewer.innerHTML = '';
+    /* 커맨드 제거 */
 
-      parsed.forEach(item => {
-        if (item.type === 'dialogue') {
-          const card = document.createElement('div');
-          card.className = 'dialogue';
-
-          card.innerHTML = `
-            <div class="speaker">${item.speaker}</div>
-            <div class="dialogue-text">${item.text}</div>
-          `;
-
-          viewer.appendChild(card);
-        }
-
-        else {
-          const text = document.createElement('div');
-          text.className = 'narration';
-          text.textContent = item.text;
-
-          viewer.appendChild(text);
-        }
-      });
+    if(trimmed.startsWith('[')){
+      return;
     }
 
-    // 파일 로드
-    async function loadStory(fileName) {
-      try {
-        const response = await fetch(`./memory/${fileName}`);
-        const text = await response.text();
+    /* 일반 텍스트 */
 
-        document.getElementById('currentTitle').textContent = fileName;
-        document.getElementById('currentDesc').textContent = `memory/${fileName}`;
+    var narration =
+      document.createElement('div');
 
-        const parsed = parseStory(text);
-        renderStory(parsed);
-      }
+    narration.className = 'narration';
 
-      catch(error) {
-        viewer.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon">⚠️</div>
-            <div class="empty-title">파일 로드 실패</div>
-            <div class="empty-text">
-              memory/${fileName} 파일을 찾을 수 없습니다.
-            </div>
-          </div>
-        `;
-      }
-    }
+    narration.textContent =
+      trimmed;
 
-    renderFileList(storyFiles);
-  </script></body>
+    storyArea.appendChild(narration);
+
+  });
+
+}
+
+/* ───────────────── ESCAPE ───────────────── */
+
+function escapeHtml(text){
+
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+}
+
+})();
+
+</script>
+
+</body>
 </html>

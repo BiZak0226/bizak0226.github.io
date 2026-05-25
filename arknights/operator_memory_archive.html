@@ -2,782 +2,626 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
-/>
-
-<title>Operator Memory Archive</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory Archive</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-
-<link
-  href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@500;700&family=Share+Tech+Mono&display=swap"
-  rel="stylesheet"
->
-
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
 <style>
-
-:root{
-  --bg:#0d1018;
-  --surface:#151925;
-  --surface2:#1b2130;
-
-  --border:#2b3247;
-  --border2:#3b4767;
-
-  --text:#edf1ff;
-  --text-dim:#9ca7c7;
-  --text-fade:#5f6886;
-
-  --accent:#5d93ff;
-
-  --sidebar-width:300px;
-}
-
-/* ───────────────── RESET ───────────────── */
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
-body{
-  background:var(--bg);
-  color:var(--text);
-
-  font-family:'Noto Sans KR', sans-serif;
-
-  min-height:100vh;
-
-  overflow-x:hidden;
-}
-
-/* ───────────────── BG GRID ───────────────── */
-
-body::before{
-  content:'';
-
-  position:fixed;
-  inset:0;
-
-  background-image:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-
-  background-size:40px 40px;
-
-  pointer-events:none;
-
-  touch-action:none;
-
-  z-index:0;
-}
-
-/* ───────────────── HEADER ───────────────── */
-
-.header{
-  position:sticky;
-  top:0;
-
-  z-index:120;
-
-  height:64px;
-
-  display:flex;
-  align-items:center;
-  gap:14px;
-
-  padding:0 18px;
-
-  background:rgba(12,15,24,0.9);
-
-  backdrop-filter:blur(10px);
-
-  border-bottom:1px solid var(--border);
-}
-
-.menu-button{
-  width:42px;
-  height:42px;
-
-  border:none;
-  outline:none;
-
-  border-radius:12px;
-
-  background:rgba(255,255,255,0.05);
-
-  color:white;
-
-  font-size:20px;
-
-  cursor:pointer;
-
-  position:relative;
-  z-index:200;
-}
-
-.title-area{
-  display:flex;
-  flex-direction:column;
-}
-
-.title-eyebrow{
-  font-size:10px;
-
-  letter-spacing:2px;
-
-  color:var(--text-fade);
-
-  text-transform:uppercase;
-
-  font-family:'Share Tech Mono', monospace;
-}
-
-.title-main{
-  font-size:18px;
-  font-weight:700;
-
-  font-family:'Noto Serif KR', serif;
-}
-
-/* ───────────────── SIDEBAR ───────────────── */
-
-.sidebar{
-  position:fixed;
-
-  left:-320px;
-  top:0;
-
-  width:var(--sidebar-width);
-  height:100vh;
-
-  background:#121722;
-
-  border-right:1px solid var(--border);
-
-  z-index:150;
-
-  transition:left 0.25s ease;
-
-  display:flex;
-  flex-direction:column;
-}
-
-.sidebar.open{
-  left:0;
-}
-
-.sidebar-header{
-  height:64px;
-
-  display:flex;
-  align-items:center;
-
-  padding:0 20px;
-
-  border-bottom:1px solid var(--border);
-}
-
-.sidebar-title{
-  font-size:14px;
-
-  letter-spacing:2px;
-
-  color:var(--accent);
-
-  font-family:'Share Tech Mono', monospace;
-}
-
-.search-wrap{
-  padding:16px;
-  border-bottom:1px solid var(--border);
-}
-
-.search-input{
-  width:100%;
-
-  padding:12px 14px;
-
-  border-radius:12px;
-
-  border:1px solid var(--border2);
-
-  background:#0d1119;
-
-  color:white;
-
-  outline:none;
-}
-
-.file-list{
-  flex:1;
-
-  overflow-y:auto;
-
-  list-style:none;
-
-  padding:10px;
-}
-
-.file-item{
-  margin-bottom:6px;
-}
-
-.file-button{
-  width:100%;
-
-  display:flex;
-  align-items:center;
-  gap:10px;
-
-  padding:12px;
-
-  border:none;
-
-  border-radius:12px;
-
-  background:transparent;
-
-  color:var(--text-dim);
-
-  text-align:left;
-
-  cursor:pointer;
-
-  transition:0.15s;
-}
-
-.file-button:active{
-  transform:scale(0.98);
-}
-
-.file-button:hover{
-  background:rgba(255,255,255,0.04);
-
-  color:var(--text);
-}
-
-.file-icon{
-  opacity:0.6;
-}
-
-.file-name{
-  flex:1;
-
-  font-size:13px;
-
-  line-height:1.5;
-}
-
-/* ───────────────── OVERLAY ───────────────── */
-
-.overlay{
-  position:fixed;
-  inset:0;
-
-  background:rgba(0,0,0,0.45);
-
-  opacity:0;
-  pointer-events:none;
-
-  transition:0.2s;
-
-  z-index:140;
-}
-
-.overlay.show{
-  opacity:1;
-  pointer-events:auto;
-}
-
-/* ───────────────── MAIN ───────────────── */
-
-.main{
-  position:relative;
-  z-index:1;
-
-  width:100%;
-
-  display:flex;
-  justify-content:center;
-
-  padding:28px 14px 120px;
-}
-
-.reader{
-  width:100%;
-  max-width:860px;
-}
-
-/* ───────────────── INTRO ───────────────── */
-
-.intro{
-  margin-bottom:28px;
-}
-
-.intro-eyebrow{
-  font-size:11px;
-
-  letter-spacing:2px;
-
-  color:var(--text-fade);
-
-  text-transform:uppercase;
-
-  font-family:'Share Tech Mono', monospace;
-
-  margin-bottom:8px;
-}
-
-.intro-title{
-  font-size:30px;
-  font-weight:700;
-
-  font-family:'Noto Serif KR', serif;
-
-  margin-bottom:10px;
-}
-
-.intro-desc{
-  color:var(--text-dim);
-
-  line-height:1.8;
-
-  font-size:14px;
-}
-
-/* ───────────────── STORY ───────────────── */
-
-.story-area{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-}
-
-.dialogue{
-  background:var(--surface);
-
-  border:1px solid var(--border);
-
-  border-radius:18px;
-
-  padding:18px;
-}
-
-.dialogue-name{
-  font-size:12px;
-
-  color:var(--accent);
-
-  letter-spacing:1px;
-
-  margin-bottom:10px;
-
-  font-family:'Share Tech Mono', monospace;
-}
-
-.dialogue-text{
-  line-height:2;
-
-  font-size:15px;
-
-  word-break:keep-all;
-}
-
-.narration{
-  padding:4px 8px;
-
-  color:var(--text-dim);
-
-  line-height:2;
-
-  font-size:15px;
-}
-
-/* ───────────────── MOBILE ───────────────── */
-
-@media(max-width:768px){
-
-  .header{
-    padding:0 14px;
+  :root {
+    --bg: #0d0e11;
+    --surface: #14161b;
+    --surface2: #1c1f27;
+    --border: #2a2e3a;
+    --accent: #c8a96e;
+    --accent2: #7a9fc4;
+    --text: #d8d0c4;
+    --text-dim: #7a7468;
+    --text-muted: #4a4640;
+    --scene-color: #7a9fc4;
   }
 
-  .intro-title{
-    font-size:24px;
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nanum Gothic', sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+    min-height: 100vh;
   }
 
-  .dialogue{
-    padding:16px;
-    border-radius:16px;
+  /* HEADER */
+  .site-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(13,14,17,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
-  .dialogue-text{
-    font-size:14px;
+  .site-title {
+    font-family: 'Nanum Myeongjo', serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
   }
 
-  .narration{
-    font-size:14px;
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
 
-}
+  .header-meta {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
 
+  .sidebar-toggle {
+    display: none;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 3px;
+  }
+
+  /* LAYOUT */
+  .layout {
+    display: flex;
+    padding-top: 56px;
+    min-height: 100vh;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    position: fixed;
+    top: 56px; left: 0; bottom: 0;
+    overflow-y: auto;
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .search-wrap {
+    padding: 14px 14px 10px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .search-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 7px 11px;
+    border-radius: 3px;
+    font-family: 'Nanum Gothic', sans-serif;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-muted); }
+
+  .sidebar-stats {
+    padding: 8px 14px 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+
+  .op-list { list-style: none; flex: 1; overflow-y: auto; }
+
+  .op-item {
+    cursor: pointer;
+    padding: 7px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.12s;
+    border-left: 2px solid transparent;
+  }
+
+  .op-item:hover { background: var(--surface2); }
+
+  .op-item.active {
+    background: var(--surface2);
+    border-left-color: var(--accent);
+  }
+
+  .op-name { font-size: 13px; color: var(--text); font-weight: 700; }
+
+  .op-badge {
+    font-size: 10px;
+    color: var(--text-muted);
+    background: var(--border);
+    padding: 1px 5px;
+    border-radius: 2px;
+  }
+
+  .op-badge.multi {
+    color: var(--accent2);
+    background: rgba(122,159,196,0.1);
+    border: 1px solid rgba(122,159,196,0.25);
+  }
+
+  /* MAIN */
+  .main {
+    margin-left: 260px;
+    flex: 1;
+    max-width: 820px;
+    padding: 44px 52px;
+  }
+
+  /* EMPTY */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .empty-icon {
+    font-size: 52px;
+    opacity: 0.18;
+    margin-bottom: 8px;
+  }
+
+  .empty-title {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 20px;
+    color: var(--text-dim);
+  }
+
+  .empty-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* STORY */
+  .story-header {
+    margin-bottom: 28px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .story-code {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .story-title {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .ep-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .ep-tab {
+    padding: 4px 14px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-size: 12px;
+    color: var(--text-dim);
+    cursor: pointer;
+    background: none;
+    font-family: 'Nanum Gothic', sans-serif;
+    transition: all 0.14s;
+  }
+
+  .ep-tab:hover { border-color: var(--accent); color: var(--accent); }
+
+  .ep-tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+    font-weight: 700;
+  }
+
+  /* CONTENT */
+  .story-body { min-height: 200px; }
+
+  .seg-scene {
+    display: block;
+    font-size: 12px;
+    color: var(--scene-color);
+    letter-spacing: 0.07em;
+    margin: 22px 0 8px;
+    padding-left: 12px;
+    border-left: 2px solid var(--scene-color);
+    opacity: 0.85;
+  }
+
+  .seg-para {
+    display: block;
+    margin-bottom: 14px;
+    color: var(--text);
+    line-height: 1.95;
+  }
+
+  /* LOADING */
+  .loading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 40px 0;
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .no-content {
+    padding: 28px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    border: 1px dashed var(--border);
+    border-radius: 3px;
+    margin-top: 8px;
+  }
+
+  /* SCROLL TOP */
+  .scroll-top {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    width: 36px; height: 36px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    color: var(--text-dim);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, color 0.2s;
+  }
+
+  .scroll-top.vis { opacity: 1; pointer-events: all; }
+  .scroll-top:hover { color: var(--accent); }
+
+  .progress-bar {
+    position: fixed;
+    top: 56px; left: 0;
+    height: 2px;
+    background: var(--accent);
+    z-index: 99;
+    width: 0;
+    transition: width 0.08s;
+  }
+
+  .fade-in {
+    animation: fadeIn 0.22s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hidden { display: none !important; }
+
+  /* MOBILE */
+  @media (max-width: 760px) {
+    .sidebar-toggle { display: block; }
+
+    .sidebar {
+      width: 100%;
+      z-index: 50;
+      transform: translateX(-100%);
+      transition: transform 0.22s ease;
+    }
+
+    .sidebar.open { transform: translateX(0); }
+
+    .main { margin-left: 0; padding: 24px 18px; }
+    .story-title { font-size: 21px; }
+  }
 </style>
 </head>
-
 <body>
 
-<!-- ───────────────── HEADER ───────────────── -->
-
-<header class="header">
-
-  <button
-    class="menu-button"
-    id="menuButton"
-    aria-label="menu"
-  >
-    ☰
-  </button>
-
-  <div class="title-area">
-    <div class="title-eyebrow">
-      Arknights Archive
-    </div>
-
-    <div class="title-main">
-      Operator Memory
-    </div>
+<header class="site-header">
+  <div class="site-title">Memory Archive</div>
+  <div class="header-right">
+    <span class="header-meta" id="headerMeta"></span>
+    <button class="sidebar-toggle" id="sidebarToggle">목록</button>
   </div>
-
 </header>
 
-<!-- ───────────────── SIDEBAR ───────────────── -->
+<div class="progress-bar" id="progressBar"></div>
 
-<aside
-  class="sidebar"
-  id="sidebar"
->
-
-  <div class="sidebar-header">
-    <div class="sidebar-title">
-      MEMORY FILES
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="search-wrap">
+      <input class="search-input" type="text" id="searchInput" placeholder="오퍼레이터 검색…" autocomplete="off">
     </div>
-  </div>
+    <div class="sidebar-stats" id="sidebarStats">불러오는 중…</div>
+    <ul class="op-list" id="opList"></ul>
+  </aside>
 
-  <div class="search-wrap">
+  <main class="main" id="main">
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">◈</div>
+      <div class="empty-title">오퍼레이터를 선택하세요</div>
+      <div class="empty-sub">왼쪽 목록에서 오퍼레이터를 선택하면<br>메모리 파일을 열람할 수 있습니다.</div>
+    </div>
+    <div id="storyView" class="hidden"></div>
+  </main>
+</div>
 
-    <input
-      type="text"
-      class="search-input"
-      id="searchInput"
-      placeholder="파일 검색..."
-    >
-
-  </div>
-
-  <ul
-    class="file-list"
-    id="fileList"
-  ></ul>
-
-</aside>
-
-<!-- ───────────────── OVERLAY ───────────────── -->
-
-<div
-  class="overlay"
-  id="overlay"
-></div>
-
-<!-- ───────────────── MAIN ───────────────── -->
-
-<main class="main">
-
-  <div class="reader">
-
-    <section class="intro">
-
-      <div class="intro-eyebrow">
-        / operator memory archive
-      </div>
-
-      <h1 class="intro-title">
-        오퍼레이터 기록 열람
-      </h1>
-
-      <div class="intro-desc">
-        좌측 메뉴에서 파일을 선택하세요.<br>
-        연출 및 커맨드는 제거되고 텍스트만 표시됩니다.
-      </div>
-
-    </section>
-
-    <section
-      class="story-area"
-      id="storyArea"
-    ></section>
-
-  </div>
-
-</main>
+<button class="scroll-top" id="scrollTop">↑</button>
 
 <script>
+(function() {
+  'use strict';
 
-(function(){
+  const INDEX_URL = './index.json';
+  const MEMORY_PATH = './memory/';
 
-/* ───────────────── ELEMENTS ───────────────── */
+  let INDEX = null;      // { code: [{ep, part, file}] }
+  let currentCode = null;
+  let currentEpIdx = 0;
+  let cache = {};        // file -> parsed segments
 
-var menuButton =
-  document.getElementById('menuButton');
+  // DOM refs
+  const opList       = document.getElementById('opList');
+  const searchInput  = document.getElementById('searchInput');
+  const sidebarStats = document.getElementById('sidebarStats');
+  const headerMeta   = document.getElementById('headerMeta');
+  const emptyState   = document.getElementById('emptyState');
+  const storyView    = document.getElementById('storyView');
+  const sidebar      = document.getElementById('sidebar');
+  const scrollTopBtn = document.getElementById('scrollTop');
+  const progressBar  = document.getElementById('progressBar');
 
-var sidebar =
-  document.getElementById('sidebar');
+  // ── 파싱 ──────────────────────────────────────────────────────────
+  function parseText(raw) {
+    const lines = raw.split('\n');
+    const segments = [];
 
-var overlay =
-  document.getElementById('overlay');
+    for (let line of lines) {
+      line = line.trim();
+      if (!line) continue;
+      if (line.startsWith('[')) continue;   // 연출 태그 제거
 
-var fileList =
-  document.getElementById('fileList');
+      // 짧고 문장 종결어미 없는 줄 → 씬 헤더
+      const isScene = line.length <= 40
+        && !/[.?!。…이다었다겠다한다린다진다인다였다겠지]$/.test(line)
+        && !/[。.?!]$/.test(line);
 
-var storyArea =
-  document.getElementById('storyArea');
+      segments.push({ type: isScene ? 'scene' : 'para', text: line });
+    }
 
-var searchInput =
-  document.getElementById('searchInput');
+    // 연속 빈 구분 정리 필요없음 (이미 빈줄 스킵)
+    return segments;
+  }
 
-/* ───────────────── MENU ───────────────── */
+  // ── 파일 fetch ────────────────────────────────────────────────────
+  async function fetchFile(fname) {
+    if (cache[fname]) return cache[fname];
+    const resp = await fetch(MEMORY_PATH + fname);
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const text = await resp.text();
+    const segs = parseText(text);
+    cache[fname] = segs;
+    return segs;
+  }
 
-function openMenu(){
+  // ── 목록 렌더 ─────────────────────────────────────────────────────
+  function renderList(filter) {
+    opList.innerHTML = '';
+    if (!INDEX) return;
 
-  sidebar.classList.add('open');
+    const q = filter ? filter.toLowerCase() : '';
+    let count = 0;
 
-  overlay.classList.add('show');
-}
+    for (const code of Object.keys(INDEX).sort()) {
+      if (q && !code.toLowerCase().includes(q)) continue;
+      count++;
+      const stories = INDEX[code];
+      const multi   = stories.length > 1;
 
-function closeMenu(){
+      const li = document.createElement('li');
+      li.className = 'op-item' + (code === currentCode ? ' active' : '');
+      li.dataset.code = code;
+      li.innerHTML =
+        `<span class="op-name">${code.toUpperCase()}</span>` +
+        (multi
+          ? `<span class="op-badge multi">×${stories.length}</span>`
+          : '');
+      li.addEventListener('click', () => selectOp(code));
+      opList.appendChild(li);
+    }
 
-  sidebar.classList.remove('open');
+    sidebarStats.textContent = `${count} / ${Object.keys(INDEX).length} 오퍼레이터`;
+  }
 
-  overlay.classList.remove('show');
-}
+  // ── 오퍼레이터 선택 ───────────────────────────────────────────────
+  function selectOp(code) {
+    if (currentCode === code) {
+      if (window.innerWidth <= 760) sidebar.classList.remove('open');
+      return;
+    }
+    currentCode = code;
+    currentEpIdx = 0;
 
-menuButton.addEventListener('click', openMenu);
+    document.querySelectorAll('.op-item').forEach(el =>
+      el.classList.toggle('active', el.dataset.code === code)
+    );
+    const active = opList.querySelector('.op-item.active');
+    if (active) active.scrollIntoView({ block: 'nearest' });
 
-overlay.addEventListener('click', closeMenu);
+    headerMeta.textContent = code.toUpperCase();
+    renderStoryShell();
+    loadEpisode(0);
 
-/* ───────────────── FILE LIST ───────────────── */
+    if (window.innerWidth <= 760) sidebar.classList.remove('open');
+    window.scrollTo(0, 0);
+  }
 
-var files = [];
+  // ── 스토리 껍데기 (탭 포함) ───────────────────────────────────────
+  function renderStoryShell() {
+    const stories = INDEX[currentCode];
+    emptyState.classList.add('hidden');
+    storyView.classList.remove('hidden');
 
-/*
-memory/filelist.json 예시
+    let tabsHtml = '';
+    if (stories.length > 1) {
+      stories.forEach((s, i) => {
+        const label = `에피소드 ${s.ep}` + (s.part > 1 ? `-${s.part}` : '');
+        tabsHtml += `<button class="ep-tab${i === 0 ? ' active' : ''}" data-idx="${i}">${label}</button>`;
+      });
+    }
 
-[
-  "amiya.txt",
-  "chen.txt",
-  "texas.txt"
-]
-*/
+    storyView.innerHTML = `
+      <div class="story-header">
+        <div class="story-code">${currentCode}</div>
+        <div class="story-title">${currentCode.toUpperCase()}</div>
+        ${stories.length > 1 ? `<div class="ep-tabs" id="epTabs">${tabsHtml}</div>` : ''}
+      </div>
+      <div id="storyBody" class="story-body">
+        <div class="loading"><div class="spinner"></div>불러오는 중…</div>
+      </div>`;
 
-fetch('../memory/filelist.json')
+    // 탭 이벤트
+    const epTabs = document.getElementById('epTabs');
+    if (epTabs) {
+      epTabs.addEventListener('click', e => {
+        const btn = e.target.closest('.ep-tab');
+        if (!btn) return;
+        const idx = parseInt(btn.dataset.idx);
+        if (idx === currentEpIdx) return;
+        currentEpIdx = idx;
+        epTabs.querySelectorAll('.ep-tab').forEach(b =>
+          b.classList.toggle('active', b.dataset.idx == idx)
+        );
+        loadEpisode(idx);
+        window.scrollTo(0, 0);
+      });
+    }
+  }
 
-.then(function(res){
-  return res.json();
-})
+  // ── 에피소드 로드 ─────────────────────────────────────────────────
+  async function loadEpisode(idx) {
+    const body = document.getElementById('storyBody');
+    if (!body) return;
 
-.then(function(data){
+    const story = INDEX[currentCode][idx];
+    if (!story) return;
 
-  files = data;
+    body.innerHTML = '<div class="loading"><div class="spinner"></div>불러오는 중…</div>';
 
-  renderFileList(files);
+    try {
+      const segs = await fetchFile(story.file);
+      if (currentCode !== currentCode || currentEpIdx !== idx) return; // 변경됐으면 무시
+      body.classList.add('fade-in');
+      body.innerHTML = renderSegments(segs);
+    } catch (err) {
+      body.innerHTML = `<div class="no-content">파일을 불러올 수 없습니다: ${story.file}</div>`;
+    }
+  }
 
-})
+  // ── 세그먼트 HTML ─────────────────────────────────────────────────
+  function renderSegments(segs) {
+    if (!segs || segs.length === 0) {
+      return '<div class="no-content">이 파일에는 열람 가능한 내레이션이 없습니다.</div>';
+    }
+    return segs.map(s => {
+      const t = esc(s.text);
+      return s.type === 'scene'
+        ? `<span class="seg-scene">${t}</span>`
+        : `<span class="seg-para">${t}</span>`;
+    }).join('');
+  }
 
-.catch(function(err){
+  function esc(str) {
+    return str
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
 
-  console.error(err);
+  // ── 검색 ──────────────────────────────────────────────────────────
+  searchInput.addEventListener('input', () => renderList(searchInput.value));
 
-  fileList.innerHTML =
-    '<li style="padding:16px;color:#ff8080;">파일 목록 로드 실패</li>';
+  // ── 스크롤 ────────────────────────────────────────────────────────
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = total > 0 ? (scrolled / total * 100) + '%' : '0%';
+    scrollTopBtn.classList.toggle('vis', scrolled > 400);
+  });
 
-});
+  scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-/* ───────────────── RENDER FILE LIST ───────────────── */
+  // ── 모바일 ────────────────────────────────────────────────────────
+  document.getElementById('sidebarToggle').addEventListener('click', () =>
+    sidebar.classList.toggle('open')
+  );
 
-function renderFileList(list){
-
-  fileList.innerHTML = '';
-
-  list.forEach(function(file){
-
-    var li =
-      document.createElement('li');
-
-    li.className = 'file-item';
-
-    var button =
-      document.createElement('button');
-
-    button.className = 'file-button';
-
-    button.innerHTML =
-      '<span class="file-icon">◈</span>' +
-      '<span class="file-name">' +
-      file.replace('.txt','') +
-      '</span>';
-
-    button.addEventListener('click', function(){
-
-      loadStory(file);
-
-      closeMenu();
-
+  // ── 초기화 ────────────────────────────────────────────────────────
+  fetch(INDEX_URL)
+    .then(r => r.json())
+    .then(data => {
+      INDEX = data;
+      renderList('');
+    })
+    .catch(() => {
+      sidebarStats.textContent = '목록 로드 실패';
     });
-
-    li.appendChild(button);
-
-    fileList.appendChild(li);
-
-  });
-
-}
-
-/* ───────────────── SEARCH ───────────────── */
-
-searchInput.addEventListener('input', function(){
-
-  var keyword =
-    this.value.toLowerCase();
-
-  var filtered =
-    files.filter(function(file){
-
-      return file
-        .toLowerCase()
-        .includes(keyword);
-
-    });
-
-  renderFileList(filtered);
-
-});
-
-/* ───────────────── LOAD STORY ───────────────── */
-
-function loadStory(filename){
-
-  fetch('../memory/' + filename)
-
-  .then(function(res){
-    return res.text();
-  })
-
-  .then(function(text){
-
-    renderStory(text);
-
-  })
-
-  .catch(function(err){
-
-    console.error(err);
-
-    storyArea.innerHTML =
-      '<div class="narration">파일 로드 실패</div>';
-
-  });
-
-}
-
-/* ───────────────── PARSE STORY ───────────────── */
-
-function renderStory(content){
-
-  storyArea.innerHTML = '';
-
-  var lines =
-    content.split('\n');
-
-  lines.forEach(function(line){
-
-    var trimmed =
-      line.trim();
-
-    if(!trimmed){
-      return;
-    }
-
-    /*
-      [name="Amiya"] text
-    */
-
-    var match =
-      trimmed.match(/^\[name="(.+?)"\](.+)$/);
-
-    if(match){
-
-      var card =
-        document.createElement('div');
-
-      card.className = 'dialogue';
-
-      card.innerHTML =
-        '<div class="dialogue-name">' +
-        match[1] +
-        '</div>' +
-
-        '<div class="dialogue-text">' +
-        escapeHtml(match[2]) +
-        '</div>';
-
-      storyArea.appendChild(card);
-
-      return;
-    }
-
-    /* 커맨드 제거 */
-
-    if(trimmed.startsWith('[')){
-      return;
-    }
-
-    /* 일반 텍스트 */
-
-    var narration =
-      document.createElement('div');
-
-    narration.className = 'narration';
-
-    narration.textContent =
-      trimmed;
-
-    storyArea.appendChild(narration);
-
-  });
-
-}
-
-/* ───────────────── ESCAPE ───────────────── */
-
-function escapeHtml(text){
-
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-
-}
 
 })();
-
 </script>
-
 </body>
 </html>

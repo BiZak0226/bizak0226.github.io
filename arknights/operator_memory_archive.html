@@ -82,13 +82,14 @@
 
   .op-ul{list-style:none;}
   .op-li{
-    cursor:pointer;padding:7px 12px;
+    cursor:pointer;padding:6px 12px;
     display:flex;align-items:center;justify-content:space-between;
     transition:background .1s;border-left:2px solid transparent;
   }
   .op-li:hover{background:var(--surface2);}
   .op-li.on{background:var(--surface2);border-left-color:var(--accent);}
   .op-nm{font-size:13px;color:var(--text);font-weight:700;}
+  .op-sub{display:block;font-size:10px;color:var(--text-muted);letter-spacing:.04em;margin-top:1px;}
   .op-bd{
     font-size:10px;color:var(--text-muted);
     background:var(--border);padding:1px 5px;border-radius:2px;
@@ -386,7 +387,8 @@ function buildList(q){
   const f=(q||'').toLowerCase();
   let n=0;
   for(const code of Object.keys(INDEX).sort()){
-    if(f && !code.toLowerCase().includes(f)) continue;
+    const nameVal = (st[0].name||'').toLowerCase();
+    if(f && !code.toLowerCase().includes(f) && !nameVal.includes(f)) continue;
     n++;
     const st=INDEX[code], multi=st.length>1;
     const li=document.createElement('li');
@@ -407,7 +409,7 @@ function pick(code){
   document.querySelectorAll('.op-li').forEach(el=>el.classList.toggle('on',el.dataset.code===code));
   const act=opUl.querySelector('.op-li.on');
   if(act) act.scrollIntoView({block:'nearest'});
-  hdOp.textContent=code.toUpperCase();
+  hdOp.textContent=(INDEX[code][0].name || code.toUpperCase());
   shell(); loadEp(0);
   if(window.innerWidth<=700) sb.classList.remove('open');
   window.scrollTo(0,0);
@@ -424,10 +426,11 @@ function shell(){
       tabs+=`<button class="ep-tab${i===0?' on':''}" data-i="${i}">${lb}</button>`;
     });
   }
+  const opName = INDEX[curCode][0].name || curCode.toUpperCase();
   sv.innerHTML=`
     <div class="sh">
-      <div class="sh-code">${curCode}</div>
-      <div class="sh-title">${curCode.toUpperCase()}</div>
+      <div class="sh-code">${curCode.toUpperCase()}</div>
+      <div class="sh-title">${opName}</div>
       ${sts.length>1?`<div class="ep-tabs" id="tabs">${tabs}</div>`:''}
     </div>
     <div id="bd" class="body"><div class="ld"><div class="sp"></div>불러오는 중…</div></div>`;

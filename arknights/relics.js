@@ -9,6 +9,8 @@
 const IS_META = {
   is2: { label:'IS:2', title:'팬텀 & 크림슨 솔리테어',
          color:'#c0243c', colorBg:'rgba(192,36,60,0.18)' },
+  is3: { label:'IS:3', title:'미즈키 & 카이룰라 아버',
+         color:'#4a9eff', colorBg:'rgba(74,158,255,0.18)' },
   is4: { label:'IS:4', title:'탐험가의 은빛 서리 끝자락',
          color:'#7ec8e8', colorBg:'rgba(126,200,232,0.15)' },
   is5: { label:'IS:5', title:'살카즈의 영겁 기담',

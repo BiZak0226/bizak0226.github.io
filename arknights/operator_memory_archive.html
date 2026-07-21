@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0f1014;
+    --surface:   #16181e;
+    --surface2:  #1d2028;
+    --border:    #282c38;
+    --accent:    #c8a96e;
+    --accent2:   #6e9bbf;
+    --text:      #cec8bf;
+    --text-dim:  #6e6a62;
+    --text-muted:#3e3c38;
+    --narr-col:  #cec8bf;
+    --spk-col:   #c8a96e;
+    --line-col:  #b8c4d0;
+    --scene-col: #5880a0;
+    --sub-col:   #8ab0c8;
+    --divider:   #22262e;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);color:var(--text);
+    font-family:'Nanum Gothic',sans-serif;
+    font-size:15px;line-height:1.85;min-height:100vh;
+  }
+
+  /* ─── HEADER ─────────────────────────────── */
+  .hd{
+    position:fixed;top:0;left:0;right:0;z-index:200;
+    background:rgba(15,16,20,.96);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+    height:50px;display:flex;align-items:center;padding:0 18px;gap:10px;
+  }
+  .hd-title{
+    font-family:'Nanum Myeongjo',serif;font-weight:800;font-size:17px;
+    color:var(--accent);letter-spacing:.08em;white-space:nowrap;
+  }
+  .hd-op{
+    flex:1;font-size:12px;color:var(--text-dim);
+    letter-spacing:.07em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .hd-btn{
+    display:none;background:none;border:1px solid var(--border);
+    color:var(--text-dim);font-size:12px;padding:4px 10px;
+    border-radius:3px;cursor:pointer;white-space:nowrap;flex-shrink:0;
+  }
+
+  /* ─── LAYOUT ─────────────────────────────── */
+  .wrap{display:flex;padding-top:50px;min-height:100vh;}
+
+  /* ─── SIDEBAR ────────────────────────────── */
+  .sb{
+    width:230px;flex-shrink:0;position:fixed;
+    top:50px;left:0;bottom:0;overflow-y:auto;
+    background:var(--surface);border-right:1px solid var(--border);
+    display:flex;flex-direction:column;
+    scrollbar-width:thin;scrollbar-color:var(--border) transparent;
+  }
+  .sb::-webkit-scrollbar{width:3px;}
+  .sb::-webkit-scrollbar-thumb{background:var(--border);}
+
+  .sb-search{padding:11px 12px 9px;border-bottom:1px solid var(--border);flex-shrink:0;}
+  .sb-input{
+    width:100%;background:var(--surface2);border:1px solid var(--border);
+    color:var(--text);padding:6px 10px;border-radius:3px;
+    font-family:'Nanum Gothic',sans-serif;font-size:13px;outline:none;
+    transition:border-color .18s;
+  }
+  .sb-input:focus{border-color:var(--accent);}
+  .sb-input::placeholder{color:var(--text-muted);}
+
+  .sb-stat{padding:6px 12px 4px;font-size:11px;color:var(--text-muted);flex-shrink:0;}
+
+  .op-ul{list-style:none;}
+  .op-li{
+    cursor:pointer;padding:6px 12px;
+    display:flex;align-items:center;justify-content:space-between;
+    transition:background .1s;border-left:2px solid transparent;
+  }
+  .op-li:hover{background:var(--surface2);}
+  .op-li.on{background:var(--surface2);border-left-color:var(--accent);}
+  .op-nm{font-size:13px;color:var(--text);font-weight:700;}
+  .op-sub{display:block;font-size:10px;color:var(--text-muted);letter-spacing:.04em;margin-top:1px;}
+  .op-bd{
+    font-size:10px;color:var(--text-muted);
+    background:var(--border);padding:1px 5px;border-radius:2px;
+  }
+  .op-bd.m{color:var(--accent2);background:rgba(110,155,191,.1);border:1px solid rgba(110,155,191,.2);}
+
+  /* ─── MAIN ───────────────────────────────── */
+  .main{margin-left:230px;flex:1;max-width:780px;padding:34px 44px;}
+
+  /* ─── EMPTY ──────────────────────────────── */
+  .empty{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    min-height:65vh;text-align:center;gap:8px;
+  }
+  .empty-ic{font-size:46px;opacity:.12;margin-bottom:6px;}
+  .empty-t{font-family:'Nanum Myeongjo',serif;font-size:18px;color:var(--text-dim);}
+  .empty-s{font-size:12px;color:var(--text-muted);line-height:1.7;}
+
+  /* ─── STORY HEADER ───────────────────────── */
+  .sh{margin-bottom:26px;padding-bottom:20px;border-bottom:1px solid var(--border);}
+  .sh-code{font-size:10px;color:var(--text-muted);letter-spacing:.18em;text-transform:uppercase;margin-bottom:3px;}
+  .sh-title{font-family:'Nanum Myeongjo',serif;font-size:24px;font-weight:800;color:var(--accent);margin-bottom:13px;}
+  .ep-tabs{display:flex;gap:5px;flex-wrap:wrap;}
+  .ep-tab{
+    padding:4px 13px;border:1px solid var(--border);border-radius:2px;
+    font-size:11px;color:var(--text-dim);cursor:pointer;background:none;
+    font-family:'Nanum Gothic',sans-serif;transition:all .13s;
+  }
+  .ep-tab:hover{border-color:var(--accent);color:var(--accent);}
+  .ep-tab.on{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:700;}
+
+  /* ─── CONTENT ────────────────────────────── */
+  .body{min-height:180px;}
+
+  /* 씬 구분 (Dialog 태그마다 구분선) */
+  .scene-div{
+    display:block;margin:28px 0 22px;
+    height:1px;background:var(--divider);
+    position:relative;
+  }
+
+  /* 내레이션 */
+  .narr{
+    display:block;
+    color:var(--narr-col);
+    font-size:15px;line-height:1.95;
+    margin-bottom:14px;
+    word-break:keep-all;
+  }
+
+  /* 자막 (Subtitle) */
+  .subt{
+    display:block;
+    color:var(--sub-col);
+    font-size:13px;line-height:1.8;
+    margin:10px 0;
+    padding:8px 14px;
+    background:rgba(110,155,191,.07);
+    border-left:2px solid var(--scene-col);
+    border-radius:0 3px 3px 0;
+    word-break:keep-all;
+  }
+
+  /* 대화 블록 */
+  .dlg{
+    display:block;
+    margin-bottom:2px;
+    padding:0;
+  }
+  /* 같은 화자 첫 줄 */
+  .dlg-first{margin-top:14px;}
+
+  .dlg-spk{
+    display:block;
+    font-size:12px;font-weight:700;
+    color:var(--spk-col);
+    letter-spacing:.03em;
+    margin-bottom:2px;
+    line-height:1.4;
+  }
+  .dlg-line{
+    display:block;
+    color:var(--line-col);
+    font-size:15px;line-height:1.9;
+    padding-left:14px;
+    word-break:keep-all;
+  }
+
+  /* 씬 메모 (짧은 시간/장소 텍스트) */
+  .scene-note{
+    display:block;
+    font-size:11px;color:var(--scene-col);
+    letter-spacing:.06em;
+    margin:20px 0 8px;padding-left:10px;
+    border-left:2px solid var(--scene-col);
+    opacity:.85;
+  }
+
+  /* 로딩 */
+  .ld{display:flex;align-items:center;gap:10px;padding:44px 0;color:var(--text-dim);font-size:13px;}
+  .sp{
+    width:15px;height:15px;flex-shrink:0;
+    border:2px solid var(--border);border-top-color:var(--accent);
+    border-radius:50%;animation:spin .7s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .empty-msg{
+    padding:26px;text-align:center;color:var(--text-muted);font-size:13px;
+    border:1px dashed var(--border);border-radius:3px;margin-top:8px;
+  }
+
+  /* ─── MISC ───────────────────────────────── */
+  .pgbar{position:fixed;top:50px;left:0;height:2px;background:var(--accent);z-index:99;width:0;transition:width .08s;}
+  .top-btn{
+    position:fixed;bottom:20px;right:18px;
+    width:34px;height:34px;background:var(--surface2);
+    border:1px solid var(--border);border-radius:3px;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;
+    font-size:14px;color:var(--text-dim);
+    opacity:0;pointer-events:none;transition:opacity .2s,color .2s;
+  }
+  .top-btn.vis{opacity:1;pointer-events:all;}
+  .top-btn:hover{color:var(--accent);}
+
+  .fi{animation:fi .2s ease;}
+  @keyframes fi{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
+  .hidden{display:none!important;}
+
+  /* ─── MOBILE ─────────────────────────────── */
+  @media(max-width:700px){
+    .hd-btn{display:block;}
+    .sb{width:100%;z-index:150;transform:translateX(-100%);transition:transform .22s ease;}
+    .sb.open{transform:translateX(0);}
+    .main{margin-left:0;padding:20px 16px;}
+    .sh-title{font-size:20px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hd">
+  <div class="hd-title">Memory Archive</div>
+  <div class="hd-op" id="hdOp"></div>
+  <button class="hd-btn" id="menuBtn">목록</button>
+</header>
+<div class="pgbar" id="pgBar"></div>
+
+<div class="wrap">
+  <aside class="sb" id="sb">
+    <div class="sb-search">
+      <input class="sb-input" type="text" id="si" placeholder="오퍼레이터 검색…" autocomplete="off">
+    </div>
+    <div class="sb-stat" id="stat">불러오는 중…</div>
+    <ul class="op-ul" id="opUl"></ul>
+  </aside>
+
+  <main class="main">
+    <div class="empty" id="emp">
+      <div class="empty-ic">◈</div>
+      <div class="empty-t">오퍼레이터를 선택하세요</div>
+      <div class="empty-s">왼쪽 목록에서 오퍼레이터를 선택하면<br>메모리 파일을 열람할 수 있습니다.</div>
+    </div>
+    <div id="sv" class="hidden"></div>
+  </main>
+</div>
+
+<button class="top-btn" id="topBtn">↑</button>
+
+<script>
+(function(){
+'use strict';
+
+/* ── 파싱 ──────────────────────────────────────────── */
+
+// [name="화자"] 대사
+const RE_NAME    = /^\[name="([^"]+)"\]\s*([\s\S]+)/;
+// [Subtitle(text="...")]
+const RE_SUBT    = /^\[Subtitle\s*\(text="([^"]+)"/i;
+// [Dialog] / [dialog] — 씬 구분점
+const RE_DIALOG  = /^\[(?:D|d)ialog\]/;
+// 나머지 [ 태그 — 제거
+const RE_TAG     = /^\[/;
+
+function parse(raw){
+  const lines = raw.split('\n');
+  const out   = [];
+
+  for(let raw_l of lines){
+    const l = raw_l.trimEnd();
+    if(!l.trim()) continue;
+
+    // 대사
+    let m = RE_NAME.exec(l);
+    if(m){ out.push({t:'dlg', spk:m[1].trim(), txt:m[2].trim()}); continue; }
+
+    // 자막
+    m = RE_SUBT.exec(l);
+    if(m){ out.push({t:'sub', txt:m[1].trim()}); continue; }
+
+    // 씬 구분
+    if(RE_DIALOG.test(l.trim())){ out.push({t:'div'}); continue; }
+
+    // 기타 제어 태그 → 버림
+    if(RE_TAG.test(l.trim())) continue;
+
+    // 내레이션 / 씬 메모
+    const text = l.trim();
+    if(!text) continue;
+
+    // 35자 이하이고 문장 종결어미 없으면 씬 메모 (시간/장소 표기)
+    const isNote = text.length <= 35
+      && !/[다요까!?…。.]$/.test(text)
+      && !/[\uAC00-\uD7A3]{2,}$/.test(text.slice(-4).replace(/[다요까!?…]/g,''));
+
+    out.push({t: isNote ? 'note' : 'narr', txt: text});
+  }
+
+  // 앞뒤 div 제거, 연속 div 하나로
+  const clean = [];
+  let prevDiv = true; // 시작 div 무시
+  for(const seg of out){
+    if(seg.t === 'div'){
+      if(!prevDiv) clean.push(seg);
+      prevDiv = true;
+    } else {
+      clean.push(seg);
+      prevDiv = false;
+    }
+  }
+  // 마지막이 div면 제거
+  if(clean.length && clean[clean.length-1].t==='div') clean.pop();
+  return clean;
+}
+
+/* ── 렌더 ──────────────────────────────────────────── */
+function render(segs){
+  if(!segs||!segs.length)
+    return '<div class="empty-msg">열람 가능한 내용이 없습니다.</div>';
+
+  let h='', prevSpk=null, inDiv=false;
+
+  for(const s of segs){
+    if(s.t==='div'){
+      h += '<span class="scene-div"></span>';
+      prevSpk=null; inDiv=true; continue;
+    }
+    inDiv=false;
+
+    if(s.t==='narr'){
+      prevSpk=null;
+      h += `<span class="narr">${e(s.txt)}</span>`;
+    } else if(s.t==='note'){
+      prevSpk=null;
+      h += `<span class="scene-note">${e(s.txt)}</span>`;
+    } else if(s.t==='sub'){
+      h += `<span class="subt">${e(s.txt)}</span>`;
+    } else if(s.t==='dlg'){
+      const first = s.spk !== prevSpk;
+      h += `<span class="dlg${first?' dlg-first':''}">` +
+           (first?`<span class="dlg-spk">${e(s.spk)}</span>`:'') +
+           `<span class="dlg-line">${e(s.txt)}</span>` +
+           `</span>`;
+      prevSpk=s.spk;
+    }
+  }
+  return h;
+}
+
+function e(s){
+  return s.replace(/&/g,'&amp;')
+          .replace(/</g,'&lt;')
+          .replace(/>/g,'&gt;')
+          .replace(/"/g,'&quot;');
+}
+
+/* ── 상태 ──────────────────────────────────────────── */
+let INDEX=null, curCode=null, curEp=0;
+const cache={};
+
+const opUl  = document.getElementById('opUl');
+const si    = document.getElementById('si');
+const stat  = document.getElementById('stat');
+const hdOp  = document.getElementById('hdOp');
+const emp   = document.getElementById('emp');
+const sv    = document.getElementById('sv');
+const sb    = document.getElementById('sb');
+const topBtn= document.getElementById('topBtn');
+const pgBar = document.getElementById('pgBar');
+
+/* ── 목록 ──────────────────────────────────────────── */
+function buildList(q){
+  opUl.innerHTML='';
+  if(!INDEX) return;
+  const f=(q||'').toLowerCase();
+  let n=0;
+  for(const code of Object.keys(INDEX).sort()){
+    const nameVal = (st[0].name||'').toLowerCase();
+    if(f && !code.toLowerCase().includes(f) && !nameVal.includes(f)) continue;
+    n++;
+    const st=INDEX[code], multi=st.length>1;
+    const li=document.createElement('li');
+    li.className='op-li'+(code===curCode?' on':'');
+    li.dataset.code=code;
+    li.innerHTML=`<span class="op-nm">${code.toUpperCase()}</span>`+
+      (multi?`<span class="op-bd m">×${st.length}</span>`:'');
+    li.addEventListener('click',()=>pick(code));
+    opUl.appendChild(li);
+  }
+  stat.textContent=`${n} / ${Object.keys(INDEX).length} 오퍼레이터`;
+}
+
+/* ── 선택 ──────────────────────────────────────────── */
+function pick(code){
+  if(curCode===code){ if(window.innerWidth<=700) sb.classList.remove('open'); return; }
+  curCode=code; curEp=0;
+  document.querySelectorAll('.op-li').forEach(el=>el.classList.toggle('on',el.dataset.code===code));
+  const act=opUl.querySelector('.op-li.on');
+  if(act) act.scrollIntoView({block:'nearest'});
+  hdOp.textContent=(INDEX[code][0].name || code.toUpperCase());
+  shell(); loadEp(0);
+  if(window.innerWidth<=700) sb.classList.remove('open');
+  window.scrollTo(0,0);
+}
+
+/* ── 껍데기 ────────────────────────────────────────── */
+function shell(){
+  const sts=INDEX[curCode];
+  emp.classList.add('hidden'); sv.classList.remove('hidden');
+  let tabs='';
+  if(sts.length>1){
+    sts.forEach((s,i)=>{
+      const lb=`에피소드 ${s.ep}`+(s.part>1?`-${s.part}`:'');
+      tabs+=`<button class="ep-tab${i===0?' on':''}" data-i="${i}">${lb}</button>`;
+    });
+  }
+  const opName = INDEX[curCode][0].name || curCode.toUpperCase();
+  sv.innerHTML=`
+    <div class="sh">
+      <div class="sh-code">${curCode.toUpperCase()}</div>
+      <div class="sh-title">${opName}</div>
+      ${sts.length>1?`<div class="ep-tabs" id="tabs">${tabs}</div>`:''}
+    </div>
+    <div id="bd" class="body"><div class="ld"><div class="sp"></div>불러오는 중…</div></div>`;
+
+  const tabsEl=document.getElementById('tabs');
+  if(tabsEl){
+    tabsEl.addEventListener('click',ev=>{
+      const b=ev.target.closest('.ep-tab'); if(!b) return;
+      const i=parseInt(b.dataset.i); if(i===curEp) return;
+      curEp=i;
+      tabsEl.querySelectorAll('.ep-tab').forEach(x=>x.classList.toggle('on',+x.dataset.i===i));
+      loadEp(i); window.scrollTo(0,0);
+    });
+  }
+}
+
+/* ── 로드 ──────────────────────────────────────────── */
+async function loadEp(idx){
+  const bd=document.getElementById('bd'); if(!bd) return;
+  const st=INDEX[curCode][idx]; if(!st) return;
+  const snap=curCode, sidx=idx;
+  bd.innerHTML='<div class="ld"><div class="sp"></div>불러오는 중…</div>';
+  try{
+    let segs=cache[st.file];
+    if(!segs){
+      const r=await fetch('./memory/'+st.file);
+      if(!r.ok) throw new Error(r.status);
+      segs=parse(await r.text());
+      cache[st.file]=segs;
+    }
+    if(curCode!==snap||curEp!==sidx) return;
+    bd.className='body fi';
+    bd.innerHTML=render(segs);
+  }catch(ex){
+    if(document.getElementById('bd')===bd)
+      bd.innerHTML=`<div class="empty-msg">파일을 불러올 수 없습니다 (${st.file})</div>`;
+  }
+}
+
+/* ── 기타 ──────────────────────────────────────────── */
+si.addEventListener('input',()=>buildList(si.value));
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;
+  pgBar.style.width=t>0?(s/t*100)+'%':'0%';
+  topBtn.classList.toggle('vis',s>400);
+});
+topBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+document.getElementById('menuBtn').addEventListener('click',()=>sb.classList.toggle('open'));
+
+/* ── 초기화 ────────────────────────────────────────── */
+fetch('./index.json')
+  .then(r=>r.json())
+  .then(d=>{ INDEX=d; buildList(''); })
+  .catch(()=>{ stat.textContent='목록 로드 실패'; });
+
+})();
+</script>
+</body>
+</html>

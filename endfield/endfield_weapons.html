@@ -14,9 +14,7 @@
 
 <!-- ── HEADER ── -->
 <header>
-  <!-- 패널 토글 버튼 -->
   <button class="panel-toggle" id="panel-toggle" title="목록 패널 열기/닫기" aria-label="목록 패널 열기/닫기">
-    <!-- 세 줄 아이콘 (햄버거 → 화살표) -->
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
       <line x1="2" y1="4"  x2="14" y2="4"/>
       <line x1="2" y1="8"  x2="14" y2="8"/>
@@ -44,11 +42,11 @@
     <div class="filter-group">
       <span class="filter-label">종류</span>
       <button class="filter-btn active" data-type="all">전체</button>
-      <button class="filter-btn" data-type="한손검">한손검</button>
-      <button class="filter-btn" data-type="양손검">양손검</button>
-      <button class="filter-btn" data-type="장병기">장병기</button>
-      <button class="filter-btn" data-type="권총">권총</button>
-      <button class="filter-btn" data-type="아츠 유닛">아츠 유닛</button>
+      <button class="filter-btn" data-type="sword">한손검</button>
+      <button class="filter-btn" data-type="greatsword">양손검</button>
+      <button class="filter-btn" data-type="polearm">장병기</button>
+      <button class="filter-btn" data-type="handcannon">권총</button>
+      <button class="filter-btn" data-type="arts_unit">아츠 유닛</button>
     </div>
   </div>
 
@@ -64,7 +62,7 @@
   <div class="panel-left" id="panel-left">
     <div class="panel-left-header">
       <span>WEAPONS</span>
-      <span><span id="weapon-count">0</span> / 66</span>
+      <span><span id="weapon-count">0</span> / <span id="weapon-total">0</span></span>
     </div>
     <div class="weapon-list" id="weapon-list"></div>
   </div>
@@ -80,7 +78,7 @@
 
 </div>
 
-<!-- 모바일 FAB (목록 열기 버튼) -->
+<!-- 모바일 FAB -->
 <div class="fab-list" id="fab-list">
   <button class="fab-btn" id="fab-open-list">
     <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
@@ -92,45 +90,59 @@
   </button>
 </div>
 
-
 <!-- ── SCRIPT ── -->
 <script defer>
-/* ─────────────────────────────────
+/* ═══════════════════════════════════════════════
    상수
-───────────────────────────────── */
+═══════════════════════════════════════════════ */
 const RARITY_COLORS = { 6:'#ff7100', 5:'#ffcc00', 4:'#b380ff', 3:'#33C2FF' };
 const RARITY_LABELS = { 6:'★★★★★★', 5:'★★★★★', 4:'★★★★', 3:'★★★' };
-const TYPE_ICONS    = { '한손검':'⚔', '양손검':'⚔', '장병기':'🗡', '권총':'🔫', '아츠 유닛':'✦' };
 
-/* ─────────────────────────────────
+// type_key → 표시 레이블
+const TYPE_LABELS = {
+  sword:      '한손검',
+  greatsword: '양손검',
+  polearm:    '장병기',
+  handcannon: '권총',
+  arts_unit:  '아츠 유닛',
+};
+// type_key → 아이콘
+const TYPE_ICONS = {
+  sword:      '⚔',
+  greatsword: '⚔',
+  polearm:    '🗡',
+  handcannon: '🔫',
+  arts_unit:  '✦',
+};
+// JSON 키 순서 유지
+const TYPE_ORDER    = ['sword','greatsword','polearm','handcannon','arts_unit'];
+const RARITY_ORDER  = [6, 5, 4, 3];
+
+/* ═══════════════════════════════════════════════
    상태
-───────────────────────────────── */
-let WEAPONS      = [];
+═══════════════════════════════════════════════ */
+// WEAPONS_FLAT: 필터·렌더링에 사용할 평탄화 배열
+// 각 항목: { id, name, type_key, type, rarity, description, lore }
+let WEAPONS_FLAT = [];
 let activeRarity = 'all';
 let activeType   = 'all';
 let searchQuery  = '';
-let selectedIdx  = null;
+let selectedId   = null; // 선택된 무기의 id (string)
 
-/* ─────────────────────────────────
-   패널 토글 상태
-   PC:     body.panel-collapsed  → 패널 숨김
-   Mobile: body.panel-open       → 드로어 열림
-───────────────────────────────── */
+/* ═══════════════════════════════════════════════
+   패널 토글
+═══════════════════════════════════════════════ */
 const isMobile = () => window.innerWidth <= 640;
 
 function openPanel() {
-  if (isMobile()) {
-    document.body.classList.add('panel-open');
-  } else {
-    document.body.classList.remove('panel-collapsed');
-  }
+  isMobile()
+    ? document.body.classList.add('panel-open')
+    : document.body.classList.remove('panel-collapsed');
 }
 function closePanel() {
-  if (isMobile()) {
-    document.body.classList.remove('panel-open');
-  } else {
-    document.body.classList.add('panel-collapsed');
-  }
+  isMobile()
+    ? document.body.classList.remove('panel-open')
+    : document.body.classList.add('panel-collapsed');
 }
 function togglePanel() {
   if (isMobile()) {
@@ -140,42 +152,24 @@ function togglePanel() {
   }
 }
 
-/* ─────────────────────────────────
+/* ═══════════════════════════════════════════════
    초기화
-───────────────────────────────── */
+═══════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
   bindPanelEvents();
   bindFilterEvents();
   loadWeapons();
 });
 
-/* ─────────────────────────────────
-   패널 이벤트
-───────────────────────────────── */
 function bindPanelEvents() {
-  // 헤더 토글 버튼
-  document.getElementById('panel-toggle')
-    .addEventListener('click', togglePanel);
-
-  // 모바일: 오버레이 클릭으로 닫기
-  document.getElementById('drawer-overlay')
-    .addEventListener('click', closePanel);
-
-  // 모바일 FAB — 목록 열기
-  document.getElementById('fab-open-list')
-    .addEventListener('click', openPanel);
-
-  // 화면 크기 변화 시 상태 초기화
+  document.getElementById('panel-toggle').addEventListener('click', togglePanel);
+  document.getElementById('drawer-overlay').addEventListener('click', closePanel);
+  document.getElementById('fab-open-list').addEventListener('click', openPanel);
   window.addEventListener('resize', () => {
-    if (!isMobile()) {
-      document.body.classList.remove('panel-open');
-    }
+    if (!isMobile()) document.body.classList.remove('panel-open');
   });
 }
 
-/* ─────────────────────────────────
-   필터 이벤트
-───────────────────────────────── */
 function bindFilterEvents() {
   document.querySelectorAll('.filter-btn[data-rarity]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -185,7 +179,6 @@ function bindFilterEvents() {
       renderList();
     });
   });
-
   document.querySelectorAll('.filter-btn[data-type]').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn[data-type]').forEach(b => b.classList.remove('active'));
@@ -194,21 +187,22 @@ function bindFilterEvents() {
       renderList();
     });
   });
-
   document.getElementById('search').addEventListener('input', e => {
     searchQuery = e.target.value.trim();
     renderList();
   });
 }
 
-/* ─────────────────────────────────
-   데이터 로드
-───────────────────────────────── */
+/* ═══════════════════════════════════════════════
+   데이터 로드 & 평탄화
+═══════════════════════════════════════════════ */
 async function loadWeapons() {
   try {
     const res = await fetch('./data/endfield_weapons_lore.json');
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    WEAPONS = await res.json();
+    const json = await res.json();
+    WEAPONS_FLAT = flattenWeapons(json.weapon);
+    document.getElementById('weapon-total').textContent = WEAPONS_FLAT.length;
     renderList();
   } catch (e) {
     console.error('JSON 로드 실패:', e);
@@ -217,22 +211,49 @@ async function loadWeapons() {
   }
 }
 
-/* ─────────────────────────────────
+/**
+ * weapon 객체를 평탄한 배열로 변환
+ * 정렬: TYPE_ORDER → RARITY_ORDER(내림차순) → 이름 가나다순
+ */
+function flattenWeapons(weaponObj) {
+  const result = [];
+  for (const typeKey of TYPE_ORDER) {
+    const rarityMap = weaponObj[typeKey];
+    if (!rarityMap) continue;
+    for (const rarity of RARITY_ORDER) {
+      const bucket = rarityMap[String(rarity)];
+      if (!bucket) continue;
+      for (const [id, w] of Object.entries(bucket)) {
+        result.push({
+          id,
+          name:        w.name,
+          type_key:    w.type_key   ?? typeKey,
+          type:        w.type       ?? TYPE_LABELS[typeKey],
+          rarity:      w.rarity     ?? rarity,
+          description: w.description ?? '',
+          lore:        w.lore        ?? '',
+        });
+      }
+    }
+  }
+  return result;
+}
+
+/* ═══════════════════════════════════════════════
    필터
-───────────────────────────────── */
+═══════════════════════════════════════════════ */
 function getFiltered() {
-  return WEAPONS.filter((w, i) => {
-    w._origIdx = i;
+  return WEAPONS_FLAT.filter(w => {
     if (activeRarity !== 'all' && w.rarity !== parseInt(activeRarity)) return false;
-    if (activeType   !== 'all' && w.type   !== activeType)             return false;
+    if (activeType   !== 'all' && w.type_key !== activeType)           return false;
     if (searchQuery  && !w.name.includes(searchQuery))                 return false;
     return true;
   });
 }
 
-/* ─────────────────────────────────
-   리스트 렌더링
-───────────────────────────────── */
+/* ═══════════════════════════════════════════════
+   리스트 렌더링 (무기 종류별 그룹 헤더 포함)
+═══════════════════════════════════════════════ */
 function renderList() {
   const list = document.getElementById('weapon-list');
   if (!list) return;
@@ -245,50 +266,72 @@ function renderList() {
     return;
   }
 
-  list.innerHTML = filtered.map(w => {
-    const color = RARITY_COLORS[w.rarity];
-    const stars = '★'.repeat(w.rarity);
-    const sel   = selectedIdx === w._origIdx ? 'selected' : '';
-    return `
-      <div class="weapon-item ${sel}" data-idx="${w._origIdx}">
-        <div class="rarity-dot" style="background:${color}"></div>
-        <div class="weapon-item-info">
-          <div class="weapon-name-list">${w.name}</div>
-          <div class="weapon-meta">
-            ${w.type} · <span class="rarity-stars" style="color:${color}">${stars}</span>
+  // 필터 결과를 type_key 순서대로 그룹화
+  const groups = {};
+  for (const typeKey of TYPE_ORDER) groups[typeKey] = [];
+  filtered.forEach(w => groups[w.type_key]?.push(w));
+
+  let html = '';
+  for (const typeKey of TYPE_ORDER) {
+    const items = groups[typeKey];
+    if (!items.length) continue;
+
+    // 그룹 헤더 (필터로 단일 타입이 선택된 경우에는 생략)
+    const showGroupHeader = activeType === 'all';
+    if (showGroupHeader) {
+      html += `
+        <div class="weapon-group-header">
+          <span class="weapon-group-icon">${TYPE_ICONS[typeKey]}</span>
+          <span class="weapon-group-name">${TYPE_LABELS[typeKey]}</span>
+          <span class="weapon-group-count">${items.length}</span>
+        </div>`;
+    }
+
+    items.forEach(w => {
+      const color = RARITY_COLORS[w.rarity];
+      const stars = '★'.repeat(w.rarity);
+      const sel   = selectedId === w.id ? 'selected' : '';
+      html += `
+        <div class="weapon-item ${sel}" data-id="${escAttr(w.id)}">
+          <div class="rarity-dot" style="background:${color}"></div>
+          <div class="weapon-item-info">
+            <div class="weapon-name-list">${escHtml(w.name)}</div>
+            <div class="weapon-meta">
+              ${escHtml(w.type)} · <span class="rarity-stars" style="color:${color}">${stars}</span>
+            </div>
           </div>
-        </div>
-      </div>`;
-  }).join('');
+        </div>`;
+    });
+  }
+
+  list.innerHTML = html;
 
   list.querySelectorAll('.weapon-item').forEach(el => {
     el.addEventListener('click', () => {
-      selectWeapon(parseInt(el.dataset.idx));
-      // 모바일: 항목 선택 시 드로어 닫기
+      selectWeapon(el.dataset.id);
       if (isMobile()) closePanel();
     });
   });
 }
 
-/* ─────────────────────────────────
+/* ═══════════════════════════════════════════════
    상세 표시
-───────────────────────────────── */
-function selectWeapon(origIdx) {
-  selectedIdx = origIdx;
-  const w = WEAPONS[origIdx];
+═══════════════════════════════════════════════ */
+function selectWeapon(id) {
+  selectedId = id;
+  const w = WEAPONS_FLAT.find(x => x.id === id);
+  if (!w) return;
 
-  document.getElementById('empty-state').style.display  = 'none';
+  document.getElementById('empty-state').style.display = 'none';
   const detail = document.getElementById('weapon-detail');
   detail.style.display = 'block';
 
   const color = RARITY_COLORS[w.rarity];
   const stars = RARITY_LABELS[w.rarity];
 
-  // 스토리 텍스트 정제
+  // 스토리 텍스트 정제 → 문단 분할
   let lore = w.lore || '';
-  //if (lore.startsWith('"') && lore.endsWith('"')) lore = lore.slice(1, -1);
   lore = lore.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-
   const loreParagraphs = lore
     .split(/\n{2,}/)
     .map(p => p.trim())
@@ -301,19 +344,20 @@ function selectWeapon(origIdx) {
 
   detail.innerHTML = `
     <div class="detail-header">
-      <div class="detail-rarity-badge" style="color:${color};border-color:${color}40;background:${color}10">
+      <div class="detail-rarity-badge"
+           style="color:${color};border-color:${color}40;background:${color}10">
         ${stars} · RARITY ${w.rarity}
       </div>
-      <div class="detail-name">${w.name}</div>
+      <div class="detail-name">${escHtml(w.name)}</div>
       <div class="detail-type-row">
-        <div class="detail-type-tag">${TYPE_ICONS[w.type] || '⚔'} ${w.type}</div>
-        <div class="detail-id">ID: ${w.weaponId}</div>
+        <div class="detail-type-tag">${TYPE_ICONS[w.type_key] ?? '⚔'} ${escHtml(w.type)}</div>
+        <div class="detail-id">ID: ${escHtml(w.id)}</div>
       </div>
     </div>
 
     <div class="section-block">
       <div class="section-label">무기 설명</div>
-      <div class="desc-box">${w.description}</div>
+      <div class="desc-box">${escHtml(w.description)}</div>
     </div>
 
     ${loreParagraphs ? `
@@ -326,17 +370,21 @@ function selectWeapon(origIdx) {
   `;
 
   document.getElementById('panel-center').scrollTo({ top: 0 });
-  renderList(); // 선택 상태 갱신
+  renderList(); // 선택 상태 하이라이트 갱신
 }
 
-/* ─────────────────────────────────
+/* ═══════════════════════════════════════════════
    유틸
-───────────────────────────────── */
+═══════════════════════════════════════════════ */
 function escHtml(str) {
-  return str
+  return String(str ?? '')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+function escAttr(str) {
+  return String(str ?? '').replace(/"/g, '&quot;');
 }
 </script>
 

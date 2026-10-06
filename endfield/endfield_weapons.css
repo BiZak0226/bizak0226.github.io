@@ -167,8 +167,59 @@ body.panel-collapsed .panel-toggle svg {
 .filter-btn[data-rarity="3"].active { border-color: var(--r3); color: var(--r3); }
 
 /* ── 검색 ── */
-.search-box {
+.search-wrap {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.search-scope {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--text-secondary);
+  padding: 5px 6px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 11px;
+  outline: none;
+  cursor: pointer;
+}
+.search-scope:focus { border-color: var(--accent); }
+
+/* 검색어 하이라이트 */
+mark {
+  background: rgba(255, 204, 0, 0.28);
+  color: #fff;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+/* 목록 내 발췌문 */
+.weapon-item.has-snippet { align-items: flex-start; }
+.weapon-item.has-snippet .rarity-dot { margin-top: 2px; }
+.weapon-snippet {
+  margin-top: 6px;
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.weapon-hit {
+  margin-top: 4px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: var(--accent);
+}
+
+.search-box {
   position: relative;
   flex-shrink: 0;
 }
@@ -543,6 +594,8 @@ body.panel-collapsed .panel-left {
   .filters::-webkit-scrollbar { display: none; }
 
   /* 검색창 */
+  .search-wrap { margin-left: 0; }
+  .search-scope { max-width: 84px; font-size: 10px; }
   .search-box { margin-left: 0; }
   .search-box input { width: 110px; font-size: 11px; }
 

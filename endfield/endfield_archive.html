@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>엔드필드 아카이브</title>
+<link rel="stylesheet" href="endfield_archive.css">
+<script src="../nav.js" data-depth="1"></script>
+</head>
+<body class="is-home">
+
+<!-- 모바일 드로어 오버레이 -->
+<div class="drawer-overlay" id="drawer-overlay"></div>
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="header-main">
+    <button class="panel-toggle" id="panel-toggle" title="목록 패널 열기/닫기" aria-label="목록 패널 열기/닫기">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <line x1="2" y1="4"  x2="14" y2="4"/>
+        <line x1="2" y1="8"  x2="14" y2="8"/>
+        <line x1="2" y1="12" x2="14" y2="12"/>
+      </svg>
+    </button>
+
+    <a class="brand" href="#home">
+      <div class="logo">ARKNIGHTS ENDFIELD</div>
+      <div class="logo-main">아카이브</div>
+    </a>
+
+    <nav class="nav-tabs" id="nav-tabs">
+      <a href="#home"     data-route="home">홈</a>
+      <a href="#all"      data-route="all">통합</a>
+      <a href="#operator" data-route="operator">오퍼레이터</a>
+      <a href="#weapon"   data-route="weapon">무기</a>
+    </nav>
+
+    <div class="search-wrap">
+      <select id="search-scope" class="search-scope" aria-label="검색 범위">
+        <option value="all">이름+설명+스토리</option>
+        <option value="lore">스토리·파일만</option>
+        <option value="name">이름만</option>
+      </select>
+      <div class="search-box">
+        <input type="text" id="search" placeholder="통합 검색 (예: 세쉬카)" autocomplete="off">
+      </div>
+    </div>
+  </div>
+
+  <!-- 필터 -->
+  <div class="filters-bar" id="filters-bar">
+    <div class="filter-group">
+      <span class="filter-label">등급</span>
+      <button class="filter-btn active" data-rarity="all">전체</button>
+      <button class="filter-btn" data-rarity="6" style="color:var(--r6)">★6</button>
+      <button class="filter-btn" data-rarity="5" style="color:var(--r5)">★5</button>
+      <button class="filter-btn" data-rarity="4" style="color:var(--r4)">★4</button>
+      <button class="filter-btn" data-rarity="3" style="color:var(--r3)">★3</button>
+    </div>
+    <div class="filter-sep" id="type-sep"></div>
+    <div class="filter-group" id="type-group">
+      <span class="filter-label">무기 종류</span>
+      <button class="filter-btn active" data-type="all">전체</button>
+      <button class="filter-btn" data-type="sword">한손검</button>
+      <button class="filter-btn" data-type="greatsword">양손검</button>
+      <button class="filter-btn" data-type="polearm">장병기</button>
+      <button class="filter-btn" data-type="handcannon">권총</button>
+      <button class="filter-btn" data-type="arts_unit">아츠 유닛</button>
+    </div>
+  </div>
+</header>
+
+<!-- ── HOME ── -->
+<main class="home" id="home">
+  <div class="home-inner">
+    <div class="home-eyebrow">ARKNIGHTS ENDFIELD</div>
+    <h1 class="home-title">엔드필드 아카이브</h1>
+    <p class="home-sub">열람할 항목을 선택하세요. 상단 검색창에 단어를 입력하면<br>오퍼레이터와 무기를 한꺼번에 검색합니다.</p>
+
+    <div class="home-cards">
+      <a class="home-card" href="#operator" id="card-operator">
+        <div class="home-card-icon">◈</div>
+        <div class="home-card-title">오퍼레이터 파일</div>
+        <div class="home-card-count"><span id="home-op-count">–</span><small>명</small></div>
+        <div class="home-card-meta" id="home-op-meta"></div>
+        <div class="home-card-go">열람하기 →</div>
+      </a>
+      <a class="home-card" href="#weapon" id="card-weapon">
+        <div class="home-card-icon">⚔</div>
+        <div class="home-card-title">무기 아카이브</div>
+        <div class="home-card-count"><span id="home-wp-count">–</span><small>종</small></div>
+        <div class="home-card-meta" id="home-wp-meta"></div>
+        <div class="home-card-go">열람하기 →</div>
+      </a>
+    </div>
+
+    <a class="home-all" href="#all">오퍼레이터 + 무기 통합 목록 보기</a>
+    <div class="home-error" id="home-error"></div>
+  </div>
+</main>
+
+<!-- ── BROWSER ── -->
+<div class="main" id="browser">
+
+  <!-- LEFT PANEL -->
+  <div class="panel-left" id="panel-left">
+    <div class="panel-left-header">
+      <span id="panel-title">ARCHIVE</span>
+      <span><span id="item-count">0</span> / <span id="item-total">0</span></span>
+    </div>
+    <div class="seg" id="seg">
+      <button data-seg="all">전체 <span class="seg-n" data-n="all">0</span></button>
+      <button data-seg="operator">오퍼레이터 <span class="seg-n" data-n="operator">0</span></button>
+      <button data-seg="weapon">무기 <span class="seg-n" data-n="weapon">0</span></button>
+    </div>
+    <div class="item-list" id="item-list"></div>
+  </div>
+
+  <!-- CENTER PANEL -->
+  <div class="panel-center" id="panel-center">
+    <div class="empty-state" id="empty-state">
+      <div class="empty-state-icon">◈</div>
+      <div class="empty-state-text">항목을 선택하세요</div>
+    </div>
+    <div class="detail" id="detail" style="display:none"></div>
+  </div>
+
+</div>
+
+<!-- 모바일 FAB -->
+<div class="fab-list" id="fab-list">
+  <button class="fab-btn" id="fab-open-list">
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <line x1="2" y1="4"  x2="14" y2="4"/>
+      <line x1="2" y1="8"  x2="14" y2="8"/>
+      <line x1="2" y1="12" x2="14" y2="12"/>
+    </svg>
+    목록
+  </button>
+</div>
+
+<script src="endfield_archive.js" defer></script>
+</body>
+</html>

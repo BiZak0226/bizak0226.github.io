@@ -25,6 +25,12 @@
   },
   {
     "category": "endfield",
+    "label": "통합 아카이브",
+    "path": "endfield/endfield_archive.html",
+    "icon": "◈"
+  },
+    {
+    "category": "endfield",
     "label": "무기 아카이브",
     "path": "endfield/endfield_weapons.html",
     "icon": "◈"
